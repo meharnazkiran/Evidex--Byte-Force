@@ -1,0 +1,17 @@
+{
+  "name": "chain-custody-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Chain of Custody System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fabric-ca-client": "^2.2.19",
+    "fabric-network": "^2.2.19",
+    "multer": "^1.4.5-lts.1"
+  }
+}

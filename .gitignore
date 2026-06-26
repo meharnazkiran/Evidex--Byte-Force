@@ -11,3 +11,9 @@ clean.sh
 *.tar.gz
 temp/
 tmp/
+
+# Backend files
+backend/node_modules/
+backend/wallet/
+backend/.env
+
