@@ -18,6 +18,10 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB max file size
 });
 
+// Serve static frontend files
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Simple Request Logger
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);

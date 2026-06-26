@@ -1,0 +1,920 @@
+/* ==========================================================================
+   EVIDEX MAXIMUM ENTERPRISE 3D GRAPHICS OVERRIDE — THE COSMIC WORKSPACE
+   ========================================================================== */
+
+:root {
+  --neon-green: #00ff8c;
+  --cyber-cyan: #00f2fe;
+  --void-black: #010507;
+  --core-white: #ffffff;
+  
+  /* Support Tokens */
+  --glow-emerald: var(--neon-green);
+  --glow-cyan: var(--cyber-cyan);
+  --glow-crimson: #ff2a5f;
+  --glow-amber: #ffb800;
+  --text-pure: #ffffff;
+  --text-primary: #e2f1f7;
+  --text-secondary: #8fa7b3;
+  --text-muted: #566c78;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --transition-normal: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Global Atmosphere Overhaul */
+body {
+  background: radial-gradient(circle at var(--active-node-x, 50%) 35%, #031c14 0%, var(--void-black) 65%) !important;
+  overflow-x: hidden;
+  perspective: 2000px;
+}
+
+/* 1. Global Zero-Gravity Perspective Frame */
+.antigravity-workspace-envelope {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  transform-style: preserve-3d;
+  padding: 50px 20px 80px 20px;
+}
+
+/* 2. THE COSMIC BEDROCK AND WARP GRID CANVAS */
+.cosmic-bedrock-frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform-style: preserve-3d;
+}
+
+.warp-grid-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 3. TITANIC SYSTEM TYPOGRAPHY */
+.brand-title-massive {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 8rem !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0;
+  background: linear-gradient(to bottom, var(--core-white) 30%, rgba(255, 255, 255, 0.15) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(0, 255, 140, 0.2));
+  text-align: center;
+  animation: title-float 6s ease-in-out infinite alternate;
+}
+
+@keyframes title-float {
+  0% { transform: translateY(0px) rotateX(0deg); }
+  100% { transform: translateY(-5px) rotateX(2deg); }
+}
+
+/* 4. MULTI-LAYERED CINEMATIC ENERGY TOWER (The central wormhole axis) */
+.core-integrity-beam-container {
+  position: fixed;
+  top: 0;
+  height: 120vh;
+  width: 450px;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+  transform: translateX(-50%) translateZ(-150px);
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1); /* Ultra-smooth inertia gliding */
+  transform-style: preserve-3d;
+}
+
+/* Layer A: The White-Hot Fission Center Core */
+.core-integrity-beam-container::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  background: var(--core-white);
+  filter: blur(2px);
+  box-shadow: 
+    0 0 15px var(--neon-green), 
+    0 0 35px var(--neon-green), 
+    0 0 60px var(--cyber-cyan);
+  opacity: 0.95;
+  animation: core-shiver 0.12s infinite linear;
+}
+
+/* Layer B: The Volumetric Green Diffusion Sleeve */
+.core-integrity-beam-container::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  background: linear-gradient(to right, 
+    transparent 0%, 
+    rgba(0, 255, 140, 0.35) 30%, 
+    rgba(0, 242, 254, 0.45) 50%, 
+    rgba(0, 255, 140, 0.35) 70%, 
+    transparent 100%
+  );
+  filter: blur(25px);
+  animation: beam-expansion 6s ease-in-out infinite alternate;
+}
+
+/* Layer C: Ambient Background Glow Field */
+.ambient-glow-sleeve {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 255, 140, 0.07) 0%, transparent 70%);
+  filter: blur(50px);
+}
+
+/* 5. 3D EMISSION BASE DISK */
+.emission-disk-base {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%) rotateX(75deg);
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(0, 255, 140, 0.6) 0%, rgba(0, 242, 254, 0.2) 45%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: disk-pulse 3s ease-in-out infinite alternate;
+}
+
+/* 6. THE GYROSCOPIC SPHERE VAULT & CORE CRYSTAL */
+.gyro-vault-sphere {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 30px auto;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  z-index: 15;
+}
+
+.gyro-ring {
+  position: absolute;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease, border-color 0.8s ease;
+  will-change: transform;
+}
+
+.gyro-ring--outer {
+  width: 340px;
+  height: 340px;
+  border: 1px dashed rgba(0, 255, 140, 0.15);
+  animation: gyro-spin-outer 25s linear infinite;
+}
+
+.gyro-ring--middle {
+  width: 270px;
+  height: 270px;
+  border: 1.5px solid rgba(0, 242, 254, 0.2);
+  animation: gyro-spin-middle 18s linear infinite reverse;
+}
+
+.gyro-ring--inner {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed rgba(0, 255, 140, 0.25);
+  animation: gyro-spin-inner 12s linear infinite;
+}
+
+/* SVG styling for rings */
+.gyro-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+
+.gyro-circle {
+  fill: none;
+  stroke-width: 1;
+  stroke-dasharray: 4, 10;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 140, 0.3));
+}
+
+.gyro-ring--outer .gyro-circle {
+  stroke: var(--neon-green);
+  animation: svg-dash-spin 40s linear infinite;
+}
+
+.gyro-ring--middle .gyro-circle {
+  stroke: var(--cyber-cyan);
+  stroke-dasharray: 15, 5;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+}
+
+.gyro-ring--inner .gyro-circle {
+  stroke: var(--neon-green);
+  stroke-dasharray: 200, 20;
+  stroke-width: 0.8;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 140, 0.5));
+}
+
+/* Cyber Telemetry labels orbiting along the rings */
+.gyro-telemetry {
+  position: absolute;
+  font-size: 0.52rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.7;
+  text-shadow: 0 0 8px currentColor;
+  transform-style: preserve-3d;
+}
+
+.gyro-ring--outer .gyro-telemetry {
+  transform: rotateZ(45deg) translate(170px) rotateZ(-45deg);
+  color: var(--neon-green);
+}
+
+.gyro-ring--middle .gyro-telemetry {
+  transform: rotateZ(135deg) translate(135px) rotateZ(-135deg);
+  color: var(--cyber-cyan);
+}
+
+.gyro-ring--inner .gyro-telemetry {
+  transform: rotateZ(-90deg) translate(100px) rotateZ(90deg);
+  color: var(--neon-green);
+}
+
+/* Spin Keyframes */
+@keyframes gyro-spin-outer {
+  0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
+  100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+}
+
+@keyframes gyro-spin-middle {
+  0% { transform: rotateX(25deg) rotateY(-40deg) rotateZ(0deg); }
+  100% { transform: rotateX(25deg) rotateY(-40deg) rotateZ(-360deg); }
+}
+
+@keyframes gyro-spin-inner {
+  0% { transform: rotateX(-45deg) rotateY(30deg) rotateZ(0deg); }
+  100% { transform: rotateX(-45deg) rotateY(30deg) rotateZ(360deg); }
+}
+
+@keyframes svg-dash-spin {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 1000; }
+}
+
+/* THE DIMENSIONAL BLOCK (3D Evidentiary Core Crystal Vault) */
+.evidentiary-core-container {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  z-index: 20;
+}
+
+.cube-scene {
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+}
+
+.cube-body {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateX(-20deg) rotateY(35deg);
+  animation: cube-tumble 18s linear infinite;
+  will-change: transform;
+}
+
+.cube-body .face {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at center, rgba(1, 15, 12, 0.85) 0%, rgba(1, 5, 7, 0.95) 90%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(0, 255, 140, 0.6);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 140, 0.25), 
+    inset 0 0 15px rgba(0, 255, 140, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  text-align: center;
+  color: var(--text-pure);
+  font-family: var(--font-mono);
+  backface-visibility: visible;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Translucent Crystal Glass Refraction Highlights */
+.cube-body .face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(0, 255, 140, 0.05) 100%);
+  pointer-events: none;
+}
+
+/* Tampered indicator */
+.evidentiary-core-container.tampered .cube-body .face {
+  border-color: var(--glow-crimson) !important;
+  box-shadow: 
+    0 0 25px rgba(255, 42, 95, 0.6), 
+    inset 0 0 15px rgba(255, 42, 95, 0.4) !important;
+}
+
+.evidentiary-core-container.tampered .cube-body .face-hash {
+  color: var(--glow-crimson) !important;
+  text-shadow: 0 0 8px rgba(255, 42, 95, 0.6) !important;
+}
+
+.evidentiary-core-container.tampered .cube-body {
+  animation: cube-shake 0.5s ease-in-out infinite !important;
+}
+
+/* Verified success indicator */
+.evidentiary-core-container.verified .cube-body .face {
+  border-color: var(--neon-green) !important;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 140, 0.7), 
+    inset 0 0 20px rgba(0, 255, 140, 0.5) !important;
+}
+
+.evidentiary-core-container.verified .cube-body {
+  animation: cube-pulse-glow 1s ease-in-out alternate infinite !important;
+}
+
+@keyframes cube-shake {
+  0%, 100% { transform: rotateX(-20deg) rotateY(35deg) translate(0, 0); }
+  25% { transform: rotateX(-22deg) rotateY(33deg) translate(-2px, -2px); }
+  75% { transform: rotateX(-18deg) rotateY(37deg) translate(2px, 2px); }
+}
+
+@keyframes cube-pulse-glow {
+  0% { transform: rotateX(-20deg) rotateY(35deg) scale(1); }
+  100% { transform: rotateX(-20deg) rotateY(35deg) scale(1.15); }
+}
+
+/* Cube 3D transformations offsets */
+.cube-body .face.front  { transform: rotateY(  0deg) translateZ(50px); }
+.cube-body .face.back   { transform: rotateY(180deg) translateZ(50px); }
+.cube-body .face.left   { transform: rotateY(-90deg) translateZ(50px); }
+.cube-body .face.right  { transform: rotateY( 90deg) translateZ(50px); }
+.cube-body .face.top    { transform: rotateX( 90deg) translateZ(50px); border-color: rgba(0, 242, 254, 0.6); }
+.cube-body .face.bottom { transform: rotateX(-90deg) translateZ(50px); border-color: rgba(0, 242, 254, 0.6); }
+
+.cube-body .face-title {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 255, 140, 0.2);
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+.cube-body .face-hash {
+  font-size: 0.52rem;
+  color: var(--neon-green);
+  word-break: break-all;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(0, 255, 140, 0.4);
+}
+
+/* 7. LAYER 2 CONTINUUM: CONCENTRIC ROTATING NODE CONSTELLATIONS */
+.handoff-continuum {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 1000px;
+  margin: 30px auto 60px auto;
+  position: relative;
+  z-index: 10;
+  transform-style: preserve-3d;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.node-constellation {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  
+  /* Apply weightless buoyancy oscillations */
+  transform: translate3d(0, 0, var(--z-depth, 30px));
+  animation: weightless-drift var(--drift-duration, 4s) ease-in-out infinite alternate;
+}
+
+/* 3D Concentric Ring Vectors surrounding the glass center disc */
+.concentric-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed rgba(0, 240, 255, 0.25);
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  transition: border-color 0.4s ease;
+}
+
+.node-constellation .ring-x {
+  border-color: rgba(0, 255, 140, 0.35);
+  transform: rotateX(70deg) rotateY(0deg);
+  animation: spin-x 12s linear infinite;
+}
+
+.node-constellation .ring-y {
+  border-color: rgba(0, 240, 255, 0.35);
+  transform: rotateX(0deg) rotateY(70deg);
+  animation: spin-y 9s linear infinite;
+}
+
+.node-constellation .ring-z {
+  border-color: rgba(255, 255, 255, 0.15);
+  border-style: dotted;
+  transform: rotateZ(0deg);
+  animation: spin-z 15s linear infinite;
+}
+
+/* Glass Disc Centerpiece of Authority Platform */
+.node-constellation .glass-disc {
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  background: rgba(3, 11, 14, 0.55);
+  backdrop-filter: blur(35px) saturate(200%);
+  -webkit-backdrop-filter: blur(35px) saturate(200%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(0, 255, 140, 0.25);
+  border-left: 1px solid rgba(0, 255, 140, 0.15);
+  box-shadow: 
+    0 35px 80px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(0, 255, 140, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  transform: translateZ(10px);
+  transition: all var(--transition-normal);
+}
+
+/* Constellation State triggers */
+.node-constellation:hover .glass-disc {
+  border-top-color: var(--cyber-cyan);
+  border-left-color: rgba(0, 242, 254, 0.25);
+  box-shadow: 
+    0 40px 90px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(0, 242, 254, 0.15);
+}
+
+.node-constellation:hover .concentric-ring {
+  border-color: var(--cyber-cyan);
+}
+
+.node-constellation.active {
+  animation-play-state: paused;
+  transform: scale(1.05) translate3d(0, -6px, 60px) !important;
+}
+
+.node-constellation.active .glass-disc {
+  border-top-color: var(--cyber-cyan);
+  border-left-color: rgba(0, 242, 254, 0.25);
+  background: rgba(4, 20, 22, 0.65);
+  box-shadow: 
+    0 45px 95px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(0, 255, 140, 0.2),
+    inset 0 0 20px rgba(0, 255, 140, 0.05);
+}
+
+.node-constellation.active .ring-x { border-color: var(--neon-green); animation-duration: 6s; }
+.node-constellation.active .ring-y { border-color: var(--cyber-cyan); animation-duration: 4.5s; }
+
+/* Micro-buoyancy variables inside glass-disc */
+.node-constellation .node-badge {
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(0, 255, 140, 0.08);
+  border: 1px solid rgba(0, 255, 140, 0.2);
+  color: var(--neon-green);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.node-constellation h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+  color: var(--text-pure);
+  text-transform: uppercase;
+}
+
+.node-constellation p {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.node-constellation .node-indicator {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.node-constellation.active .node-indicator {
+  background: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green);
+  animation: beacon-ping 1.5s infinite;
+}
+
+@keyframes beacon-ping {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* 8. PREMIUM ZERO-GRAVITY FLOATING TRACER CARDS (Foreground forms) */
+.hud-card {
+  background: rgba(4, 12, 15, 0.45) !important;
+  backdrop-filter: blur(35px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(35px) saturate(200%) !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(255, 255, 255, 0.03) !important;
+  border-top: 1px solid rgba(0, 255, 140, 0.3) !important; /* Asymmetric top neon glow */
+  border-left: 1px solid rgba(0, 255, 140, 0.15) !important;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8) !important;
+  transform-style: preserve-3d;
+  transform: translateZ(100px);
+  transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hud-card:hover {
+  border-top-color: var(--cyber-cyan) !important;
+  border-left-color: rgba(0, 242, 254, 0.25) !important;
+  box-shadow: 
+    0 45px 110px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(0, 242, 254, 0.1) !important;
+}
+
+.hud-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hud-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 255, 140, 0.2);
+  background: rgba(0, 255, 140, 0.05);
+}
+
+.hud-card__icon--hash    { color: var(--neon-green); }
+.hud-card__icon--encrypt { border-color: rgba(0, 240, 255, 0.15); background: rgba(0, 240, 255, 0.05); color: var(--cyber-cyan); }
+.hud-card__icon--verify  { border-color: rgba(255, 184, 0, 0.15); background: rgba(255, 184, 0, 0.05); color: var(--glow-amber); }
+.hud-card__icon--pipeline { color: var(--neon-green); }
+
+.hud-card__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.hud-card__subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+/* 9. Console Outputs & Verdicts */
+.hud-output {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  background: rgba(1, 4, 6, 0.95);
+  border: 1px solid rgba(0, 255, 140, 0.15);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  word-break: break-all;
+  white-space: pre-wrap;
+  display: none;
+  animation: hudCardFadeIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.hud-output.visible {
+  display: block;
+}
+
+@keyframes hudCardFadeIn {
+  from { opacity: 0; transform: translateZ(50px) translateY(10px); }
+  to   { opacity: 1; transform: translateZ(100px) translateY(0); }
+}
+
+/* Verdict HUD styling */
+.hud-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.hud-verdict--match {
+  background: rgba(0, 255, 140, 0.08);
+  color: var(--neon-green);
+  border: 1px solid rgba(0, 255, 140, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 140, 0.15);
+  animation: verdictPulse 1s alternate infinite ease-in-out;
+}
+
+.hud-verdict--tampered {
+  background: rgba(255, 42, 95, 0.08);
+  color: var(--glow-crimson);
+  border: 1px solid rgba(255, 42, 95, 0.3);
+  box-shadow: 0 0 15px rgba(255, 42, 95, 0.2);
+  animation: verdictShake 0.4s ease, screen-flash 0.3s 2 alternate;
+}
+
+@keyframes verdictPulse {
+  to { box-shadow: 0 0 25px rgba(0, 255, 140, 0.3); }
+}
+
+@keyframes verdictShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px); }
+  30% { transform: translateX(8px); }
+  45% { transform: translateX(-6px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  90% { transform: translateX(4px); }
+}
+
+@keyframes screen-flash {
+  from { background-color: transparent; }
+  to { background-color: rgba(255, 42, 95, 0.15); }
+}
+
+.hud-hash-line {
+  margin: 6px 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.hud-hash-label {
+  color: var(--text-muted);
+  width: 130px;
+  flex-shrink: 0;
+}
+.hud-hash-value {
+  color: var(--cyber-cyan);
+  font-weight: 500;
+}
+.hud-hash-value--match {
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(0, 255, 140, 0.3);
+}
+.hud-hash-value--tampered {
+  color: var(--glow-crimson);
+  text-shadow: 0 0 8px rgba(255, 42, 95, 0.3);
+}
+
+/* 10. BSA 2023 §63 Cryptographic Certificate */
+.bsa-certificate {
+  margin-top: 20px;
+  padding: 24px;
+  border: 1px solid rgba(0, 255, 140, 0.35);
+  background: linear-gradient(135deg, rgba(0, 20, 14, 0.95) 0%, rgba(1, 4, 6, 0.98) 100%);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  box-shadow: 0 0 35px rgba(0, 255, 140, 0.15);
+  animation: hudCardFadeIn 0.4s ease;
+}
+
+.bsa-certificate__hdr {
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 255, 140, 0.2);
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.bsa-certificate__title {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--neon-green);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px rgba(0, 255, 140, 0.2);
+}
+
+.bsa-certificate__sub {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  margin-top: 4px;
+}
+
+.bsa-certificate__row {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.bsa-certificate__lbl {
+  color: var(--text-muted);
+  width: 180px;
+  flex-shrink: 0;
+}
+
+.bsa-certificate__val {
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.bsa-certificate__seal {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(0, 255, 140, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--neon-green);
+  font-weight: 700;
+}
+
+.section-tagline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 40px 0 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-tagline::after {
+  content: '';
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 255, 140, 0.15), transparent);
+}
+
+/* 11. Footer Design */
+.hud-footer {
+  text-align: center;
+  margin-top: 60px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.hud-footer a {
+  color: var(--cyber-cyan);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hud-footer a:hover {
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(0, 255, 140, 0.3);
+}
+
+/* --- PHYSICS ENGINE KEYFRAMES --- */
+
+/* Smooth weightless looping drift cycle */
+@keyframes weightless-drift {
+  0% {
+    transform: translate3d(0, -10px, var(--z-depth, 30px)) rotateX(0deg) rotateY(0.5deg);
+    border-color: rgba(0, 255, 140, 0.15);
+  }
+  100% {
+    transform: translate3d(0, 10px, var(--z-depth, 30px)) rotateX(0.5deg) rotateY(-0.5deg);
+    border-color: rgba(0, 255, 140, 0.3);
+  }
+}
+
+/* High frequency core vibrations (Layer A core shiver) */
+@keyframes core-shiver {
+  0% { transform: translateX(-50%) scaleX(1); opacity: 0.9; }
+  50% { transform: translateX(-52%) scaleX(1.1); opacity: 1; }
+  100% { transform: translateX(-49%) scaleX(0.95); opacity: 0.9; }
+}
+
+/* Volumetric column expand animations (Layer B sleeve expansion) */
+@keyframes beam-expansion {
+  0% { width: 140px; opacity: 0.7; }
+  100% { width: 220px; opacity: 0.95; }
+}
+
+/* 3D Emission base pulse */
+@keyframes disk-pulse {
+  0% { transform: translateX(-50%) rotateX(75deg) scale(0.9); opacity: 0.5; }
+  100% { transform: translateX(-50%) rotateX(75deg) scale(1.15); opacity: 0.9; }
+}
+
+/* Ring staggered spin cycles */
+@keyframes spin-x {
+  0% { transform: rotateX(70deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(70deg) rotateY(0deg) rotateZ(360deg); }
+}
+
+@keyframes spin-y {
+  0% { transform: rotateX(0deg) rotateY(70deg) rotateZ(0deg); }
+  100% { transform: rotateX(0deg) rotateY(70deg) rotateZ(360deg); }
+}
+
+@keyframes spin-z {
+  0% { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(-360deg); }
+}
+
+/* Evidentiary Core tumbling axis */
+@keyframes cube-tumble {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+}
+
+/* Web-glow ticks */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Tilt classes */
+.tilt-card {
+  transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
+}

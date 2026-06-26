@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EVIDEX — Decentered Blockchain-based Forensic Evidence Integrity & Custody Securing Suite." />
+  
+  <title>EVIDEX // Cosmic Forensic Workspace</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Cascading Style Sheets -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/antigravity.css" />
+  <link rel="stylesheet" href="./css/wormhole.css" />
+</head>
+<body>
+
+<!-- Cosmic Space-Time Background Canvas -->
+<div class="cosmic-bedrock-frame">
+  <canvas id="warp-grid-canvas" class="warp-grid-canvas"></canvas>
+  <div class="space-time-mesh" id="warp-matrix-mesh"></div>
+  <div class="quantum-transit-pulse" id="wormhole-projectile"></div>
+</div>
+
+<!-- Global Zero-Gravity Perspective Frame -->
+<div class="antigravity-workspace-envelope">
+
+  <!-- Layer 2: Central Volumetric Light Axis & Emission Base (Cloned from reference image) -->
+  <div class="core-integrity-beam-container" id="global-beam-axis">
+    <div class="ambient-glow-sleeve"></div>
+    <div class="emission-disk-base"></div>
+  </div>
+
+  <!-- Foreground Application HUD -->
+  <div class="app-container">
+
+    <!-- Titanic Header -->
+    <div class="container text-center pt-5 position-relative" style="z-index: 10; margin-bottom: 40px;">
+      <h1 class="brand-title-massive">EVIDEX</h1>
+      <p class="text-muted font-monospace tracking-wide text-uppercase" style="letter-spacing: 3px; font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        Hyperledger Fabric // Cryptographic Chain-of-Custody Framework
+      </p>
+      <!-- Dedicated Handoff Trigger (Wormhole Sequence) -->
+      <div class="text-center position-relative" style="z-index: 100; margin-bottom: 10px;">
+        <button class="btn btn--outline font-monospace py-3 px-5 text-uppercase tracking-wider" 
+                id="trigger-handoff-sequence-btn" 
+                style="border-radius: 30px; border-color: var(--neon-green); color: #ffffff; text-shadow: 0 0 10px var(--neon-green); font-size: 0.85rem; font-weight: 800;">
+          Execute Chain-of-Custody Handoff
+        </button>
+      </div>
+    </div>
+
+    <!-- 3D Dimensional Gyroscope & Core Crystal (The Evidentiary Vault) -->
+    <div class="gyro-vault-sphere" id="gyro-vault-container">
+      
+      <!-- Vector Ring 01: Outer Ring (Cryptographic Hash) -->
+      <div class="gyro-ring gyro-ring--outer">
+        <div class="gyro-telemetry font-monospace">HASH // SHA-256</div>
+        <svg viewBox="0 0 100 100" class="gyro-svg">
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+        </svg>
+      </div>
+
+      <!-- Vector Ring 02: Middle Ring (AES-256 Encryption) -->
+      <div class="gyro-ring gyro-ring--middle">
+        <div class="gyro-telemetry font-monospace">CIPHER // AES-256</div>
+        <svg viewBox="0 0 100 100" class="gyro-svg">
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+        </svg>
+      </div>
+
+      <!-- Vector Ring 03: Inner Ring (IPFS Storage) -->
+      <div class="gyro-ring gyro-ring--inner">
+        <div class="gyro-telemetry font-monospace">LEDGER // IPFS</div>
+        <svg viewBox="0 0 100 100" class="gyro-svg">
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+        </svg>
+      </div>
+
+      <!-- Centerpiece 3D Crystal Block (The Evidentiary Core) -->
+      <div class="evidentiary-core-container" id="evidentiary-core-cube">
+        <div class="cube-scene">
+          <div class="cube-body">
+            <div class="face front">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+            <div class="face back">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+            <div class="face left">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+            <div class="face right">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+            <div class="face top">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+            <div class="face bottom">
+              <div class="face-title">SECURE BLOCK</div>
+              <div class="face-hash">0x0000000000000000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Layer 2 Continuum: Midground Rotating Node Constellations -->
+    <div class="section-tagline">Handoff Continuum Trackers</div>
+    <div class="handoff-continuum">
+      
+      <!-- Node 01: TN Police (Origin Ring) -->
+      <div id="node-police" class="node-constellation active" style="--drift-duration: 5.2s;">
+        <div class="concentric-ring ring-x"></div>
+        <div class="concentric-ring ring-y"></div>
+        <div class="concentric-ring ring-z"></div>
+        <div class="glass-disc">
+          <span class="node-badge">Node // 01</span>
+          <span class="node-indicator"></span>
+          <h3>TN Police Dept</h3>
+          <p>Origin Platform</p>
+        </div>
+      </div>
+
+      <!-- Node 02: Forensic Lab (Mutation Core) -->
+      <div id="node-lab" class="node-constellation" style="--drift-duration: 4.0s;">
+        <div class="concentric-ring ring-x"></div>
+        <div class="concentric-ring ring-y"></div>
+        <div class="concentric-ring ring-z"></div>
+        <div class="glass-disc">
+          <span class="node-badge">Node // 02</span>
+          <span class="node-indicator"></span>
+          <h3>Forensic Lab</h3>
+          <p>Mutation Core</p>
+        </div>
+      </div>
+
+      <!-- Node 03: Judicial Court (Destiny Vault) -->
+      <div id="node-court" class="node-constellation" style="--drift-duration: 4.6s;">
+        <div class="concentric-ring ring-x"></div>
+        <div class="concentric-ring ring-y"></div>
+        <div class="concentric-ring ring-z"></div>
+        <div class="glass-disc">
+          <span class="node-badge">Node // 03</span>
+          <span class="node-indicator"></span>
+          <h3>Judicial Court</h3>
+          <p>Destiny Vault</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Layer 3: Interactive Proof Vault (Foreground Panels) -->
+    
+    <!-- 1. End-to-End Core Pipeline Card -->
+    <div class="section-tagline">Main Handoff Action</div>
+    <div class="hud-card tilt-card" id="section-pipeline">
+      <div class="hud-card__header">
+        <div class="hud-card__icon hud-card__icon--pipeline">🚀</div>
+        <div>
+          <div class="hud-card__title">Submit New Evidence to Fabric</div>
+          <div class="hud-card__subtitle">Auto-calculates SHA-256, encrypts client-side, pins to IPFS, and registers metadata</div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="pipeline-file-input">Select Evidence File</label>
+        <input type="file" id="pipeline-file-input" />
+      </div>
+      
+      <div class="form-row">
+        <label for="pipeline-pinata-key">Pinata JWT Token</label>
+        <input type="text" id="pipeline-pinata-key" placeholder="eyJhbGciOiJIUzI1NiIs..." />
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="pipeline-officer-id">Seizing Officer ID</label>
+          <input type="text" id="pipeline-officer-id" placeholder="OFF-1092" />
+        </div>
+        <div class="form-row">
+          <label for="pipeline-case-id">FIR / Case Reference</label>
+          <input type="text" id="pipeline-case-id" placeholder="FIR-2026-0091" />
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="pipeline-location">Collection &amp; Seizure Location</label>
+        <input type="text" id="pipeline-location" placeholder="Integrated Cyber Forensic Cell, TN" />
+      </div>
+      
+      <button class="btn btn--primary" id="pipeline-btn" disabled>
+        <span class="spinner"></span>
+        <span class="btn-text">Execute Chain-of-Custody Handoff</span>
+      </button>
+      
+      <div class="hud-output" id="pipeline-output"></div>
+    </div>
+
+    <!-- 2. Interactive Offline Simulation Card (Self-contained Demo) -->
+    <div class="section-tagline">Local Evaluation Deck</div>
+    <div class="hud-card tilt-card" id="section-offline-demo">
+      <div class="hud-card__header">
+        <div class="hud-card__icon hud-card__icon--verify">🧪</div>
+        <div>
+          <div class="hud-card__title">Forensic Walkthrough Simulator</div>
+          <div class="hud-card__subtitle">Test the full tamper-detection cycle offline instantly with mock blockchain states</div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <label for="demo-file-input">Select Mock Evidence File</label>
+        <input type="file" id="demo-file-input" />
+      </div>
+      
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn btn--primary" id="demo-register-btn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">① Log Entry (Hash &amp; Encrypt)</span>
+        </button>
+        <button class="btn btn--outline" id="demo-verify-match-btn" disabled>
+          <span class="btn-text">② Verify Identical File (MATCH)</span>
+        </button>
+        <button class="btn btn--danger" id="demo-verify-tamper-btn" disabled>
+          <span class="btn-text">③ Simulate Tamper Check (TAMPERED)</span>
+        </button>
+      </div>
+      
+      <div class="hud-output" id="demo-output"></div>
+    </div>
+
+    <!-- 3. Granular Utilities (Individual Functions Demos) -->
+    <div class="section-tagline">Granular Utility Console</div>
+    
+    <div class="form-grid">
+      
+      <!-- Hashing Card -->
+      <div class="hud-card tilt-card" id="section-hash">
+        <div class="hud-card__header">
+          <div class="hud-card__icon hud-card__icon--hash">🔐</div>
+          <div>
+            <div class="hud-card__title">SHA-256 Generator</div>
+            <div class="hud-card__subtitle">Calculate file integrity fingerprint</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="hash-file-input">File Stream</label>
+          <input type="file" id="hash-file-input" />
+        </div>
+        <button class="btn btn--outline" id="hash-btn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">Compute Hash</span>
+        </button>
+        <div class="hud-output" id="hash-output"></div>
+      </div>
+
+      <!-- Encryption Card -->
+      <div class="hud-card tilt-card" id="section-encrypt">
+        <div class="hud-card__header">
+          <div class="hud-card__icon hud-card__icon--encrypt">🛡️</div>
+          <div>
+            <div class="hud-card__title">AES Encryption Vault</div>
+            <div class="hud-card__subtitle">Symmetric AES-256-GCM cipher lock</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="encrypt-file-input">Target Plaintext</label>
+          <input type="file" id="encrypt-file-input" />
+        </div>
+        <button class="btn btn--outline" id="encrypt-btn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">Encrypt Payload</span>
+        </button>
+        <div class="hud-output" id="encrypt-output"></div>
+      </div>
+
+    </div>
+
+    <div class="form-grid">
+      
+      <!-- IPFS Upload Card -->
+      <div class="hud-card tilt-card" id="section-upload">
+        <div class="hud-card__header">
+          <div class="hud-card__icon hud-card__icon--encrypt">☁️</div>
+          <div>
+            <div class="hud-card__title">IPFS Distributed Push</div>
+            <div class="hud-card__subtitle">Publish binaries to Pinata IPFS nodes</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="upload-file-input">Encrypted Payload (.bin)</label>
+          <input type="file" id="upload-file-input" />
+        </div>
+        <div class="form-row">
+          <label for="pinata-key-input">Pinata API JWT Key</label>
+          <input type="text" id="pinata-key-input" placeholder="eyJhbGciOiJIUzI1NiIs..." />
+        </div>
+        <button class="btn btn--outline" id="upload-btn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">Push Pin</span>
+        </button>
+        <div class="hud-output" id="upload-output"></div>
+      </div>
+
+      <!-- API verification Card -->
+      <div class="hud-card tilt-card" id="section-verify">
+        <div class="hud-card__header">
+          <div class="hud-card__icon hud-card__icon--verify">⚖️</div>
+          <div>
+            <div class="hud-card__title">API Integrity Lookup</div>
+            <div class="hud-card__subtitle">Cross-check database record via API</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="verify-id-input">Fabric Evidence ID</label>
+          <input type="text" id="verify-id-input" placeholder="EVD-001" />
+        </div>
+        <div class="form-row">
+          <label for="verify-file-input">Target Verification File</label>
+          <input type="file" id="verify-file-input" />
+        </div>
+        <button class="btn btn--outline" id="verify-btn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">Audit Record Integrity</span>
+        </button>
+        <div class="hud-output" id="verify-output"></div>
+      </div>
+
+    </div>
+
+    <!-- HUD Footer -->
+    <footer class="hud-footer">
+      EVIDEX v3.0 // The Cosmic Forensic Workspace // Built for Indian Courts under BSA 2023 §63 Admissibility Rules
+    </footer>
+
+  </div>
+
+</div>
+
+<!-- Client Scripts -->
+<script src="./js/particles.js"></script>
+<script src="./js/parallax.js"></script>
+<script src="./js/wormholeController.js"></script>
+<script type="module" src="./js/app.js"></script>
+
+</body>
+</html>

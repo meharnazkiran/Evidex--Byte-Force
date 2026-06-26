@@ -1,0 +1,151 @@
+/* ==========================================================================
+   EVIDEX COSMIC TRANSIT ENGINE (WORMHOLE LAYER)
+   ========================================================================== */
+
+/* 1. THE WARPED SPACE-TIME VECTOR GRID BACKGROUND */
+.space-time-mesh {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image: 
+    radial-gradient(circle at 50% 50%, transparent 20%, #010507 75%),
+    linear-gradient(rgba(0, 255, 140, 0.08) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(0, 255, 140, 0.08) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 50px 50px, 50px 50px;
+  transform: rotateX(60deg) translateZ(-200px);
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 1.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Warped state triggered during data transfer acceleration */
+.space-time-mesh.accelerating {
+  transform: rotateX(85deg) translateZ(-500px) scale(1.3);
+  filter: hue-rotate(45deg); /* Bends from emerald green to cyan blue */
+}
+
+/* 2. THE KINETIC QUANTUM TRANSIT PROJECTILE PULSE */
+.quantum-transit-pulse {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 15%, rgba(0, 242, 254, 0.95) 45%, transparent 70%);
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  z-index: 1000; /* High priority visibility */
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+/* The active keyframe sequence shooting across viewport coordinates */
+@keyframes wormhole-dash {
+  0% {
+    left: var(--source-x);
+    top: var(--source-y);
+    transform: translate(-50%, -50%) scale(0.2) translateZ(0px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) translateZ(100px);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.8) translateZ(100px);
+  }
+  100% {
+    left: var(--target-x);
+    top: var(--target-y);
+    transform: translate(-50%, -50%) scale(0.1) translateZ(-150px);
+    opacity: 0;
+  }
+}
+
+.quantum-transit-pulse.active {
+  animation: wormhole-dash 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* 3. JUDGES IMPACT WINNER: COURTROOM CAMERA TREMOR */
+@keyframes structural-tremor {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-4px, 3px) rotate(-0.6deg); }
+  40% { transform: translate(3px, -3px) rotate(0.6deg); }
+  60% { transform: translate(-3px, -2px) rotate(-0.3deg); }
+  80% { transform: translate(4px, 2px) rotate(0.4deg); }
+}
+
+.screen-shake-active {
+  animation: structural-tremor 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* 4. RECEPTOR PLATFORM OVERCLOCKING STATE */
+.node-constellation.receiving .concentric-ring {
+  animation-duration: 0.3s !important; /* Rings rotate at hyper speed to simulate block validation */
+  border-color: #00f2fe !important;
+  box-shadow: 
+    0 0 30px rgba(0, 242, 254, 0.5),
+    inset 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.node-constellation.receiving .glass-disc {
+  border-top-color: #00f2fe !important;
+  box-shadow: 
+    0 40px 90px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(0, 242, 254, 0.3) !important;
+}
+
+/* 5. GYROSCOPE RING ALIGNMENT & INTERLOCK STYLE */
+.gyro-vault-sphere.aligning .gyro-ring {
+  animation-play-state: paused !important;
+}
+
+.gyro-vault-sphere.aligned .gyro-ring--outer {
+  animation: none !important;
+  transform: rotateX(75deg) rotateY(0deg) rotateZ(0deg) translateZ(35px) !important;
+  border-color: rgba(0, 255, 140, 0.8) !important;
+  border-style: solid !important;
+  box-shadow: 
+    0 0 25px rgba(0, 255, 140, 0.4),
+    inset 0 0 15px rgba(0, 255, 140, 0.2);
+}
+
+.gyro-vault-sphere.aligned .gyro-ring--middle {
+  animation: none !important;
+  transform: rotateX(75deg) rotateY(0deg) rotateZ(0deg) translateZ(0px) !important;
+  border-color: rgba(0, 242, 254, 0.9) !important;
+  box-shadow: 
+    0 0 30px rgba(0, 242, 254, 0.5),
+    inset 0 0 20px rgba(0, 242, 254, 0.3);
+}
+
+.gyro-vault-sphere.aligned .gyro-ring--inner {
+  animation: none !important;
+  transform: rotateX(75deg) rotateY(0deg) rotateZ(0deg) translateZ(-35px) !important;
+  border-color: rgba(0, 255, 140, 0.8) !important;
+  border-style: solid !important;
+  box-shadow: 
+    0 0 25px rgba(0, 255, 140, 0.4),
+    inset 0 0 15px rgba(0, 255, 140, 0.2);
+}
+
+/* Fast spin animation for validation stage */
+.gyro-vault-sphere.processing .gyro-ring--outer {
+  animation: gyro-spin-outer 2s linear infinite !important;
+}
+.gyro-vault-sphere.processing .gyro-ring--middle {
+  animation: gyro-spin-middle 1.5s linear infinite reverse !important;
+}
+.gyro-vault-sphere.processing .gyro-ring--inner {
+  animation: gyro-spin-inner 1s linear infinite !important;
+}
+
+/* Ensure aligned label hides or shifts cleanly */
+.gyro-vault-sphere.aligned .gyro-telemetry {
+  opacity: 0.15;
+  transition: opacity 0.5s ease;
+}
