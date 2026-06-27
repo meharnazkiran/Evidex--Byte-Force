@@ -257,6 +257,121 @@ func (c *EvidenceContract) EvidenceExists(ctx contractapi.TransactionContextInte
 	return evidenceBytes != nil, nil
 }
 
+// ============================================================
+// SENTINEL AI — Access Control & Metadata Retrieval
+// ============================================================
+
+// AIAccessList defines the list of officers authorized to use the AI analytics layer
+type AIAccessList struct {
+	AuthorizedOfficers []string `json:"authorizedOfficers"`
+}
+
+const aiAccessListKey = "AI_ACCESS_LIST"
+
+// ManageAIAccess adds or removes an officer from the AI access list
+// action must be "add" or "remove"
+func (c *EvidenceContract) ManageAIAccess(ctx contractapi.TransactionContextInterface, officerID string, action string) error {
+	aclBytes, err := ctx.GetStub().GetState(aiAccessListKey)
+	if err != nil {
+		return fmt.Errorf("failed to read AI access list: %v", err)
+	}
+
+	acl := AIAccessList{AuthorizedOfficers: []string{}}
+	if aclBytes != nil {
+		err = json.Unmarshal(aclBytes, &acl)
+		if err != nil {
+			return fmt.Errorf("failed to parse AI access list: %v", err)
+		}
+	}
+
+	switch action {
+	case "add":
+		// Check if already exists
+		for _, id := range acl.AuthorizedOfficers {
+			if id == officerID {
+				return nil // already authorized
+			}
+		}
+		acl.AuthorizedOfficers = append(acl.AuthorizedOfficers, officerID)
+	case "remove":
+		filtered := []string{}
+		for _, id := range acl.AuthorizedOfficers {
+			if id != officerID {
+				filtered = append(filtered, id)
+			}
+		}
+		acl.AuthorizedOfficers = filtered
+	default:
+		return fmt.Errorf("invalid action '%s': must be 'add' or 'remove'", action)
+	}
+
+	aclBytes, err = json.Marshal(acl)
+	if err != nil {
+		return err
+	}
+	return ctx.GetStub().PutState(aiAccessListKey, aclBytes)
+}
+
+// CheckAIAccess returns true if the officer is authorized to use the AI layer
+func (c *EvidenceContract) CheckAIAccess(ctx contractapi.TransactionContextInterface, officerID string) (bool, error) {
+	aclBytes, err := ctx.GetStub().GetState(aiAccessListKey)
+	if err != nil {
+		return false, fmt.Errorf("failed to read AI access list: %v", err)
+	}
+
+	if aclBytes == nil {
+		return false, nil
+	}
+
+	var acl AIAccessList
+	err = json.Unmarshal(aclBytes, &acl)
+	if err != nil {
+		return false, fmt.Errorf("failed to parse AI access list: %v", err)
+	}
+
+	for _, id := range acl.AuthorizedOfficers {
+		if id == officerID {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// GetAllEvidence returns metadata of all evidence records (excludes internal keys like ACL)
+func (c *EvidenceContract) GetAllEvidence(ctx contractapi.TransactionContextInterface) ([]*Evidence, error) {
+	iterator, err := ctx.GetStub().GetStateByRange("", "")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get state range: %v", err)
+	}
+	defer iterator.Close()
+
+	var results []*Evidence
+	for iterator.HasNext() {
+		kv, err := iterator.Next()
+		if err != nil {
+			return nil, err
+		}
+
+		// Skip internal keys (ACL, etc.)
+		if kv.Key == aiAccessListKey {
+			continue
+		}
+
+		var evidence Evidence
+		err = json.Unmarshal(kv.Value, &evidence)
+		if err != nil {
+			continue // skip non-evidence entries
+		}
+
+		// Only include if it has a valid EvidenceID
+		if evidence.EvidenceID != "" {
+			results = append(results, &evidence)
+		}
+	}
+
+	return results, nil
+}
+
 func main() {
 	cc, err := contractapi.NewChaincode(&EvidenceContract{})
 	if err != nil {
@@ -268,3 +383,4 @@ func main() {
 		panic(fmt.Sprintf("Error starting evidence chaincode: %s", err))
 	}
 }
+

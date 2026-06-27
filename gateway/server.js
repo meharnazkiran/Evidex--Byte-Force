@@ -173,8 +173,53 @@ app.get('/api/evidence/history/:id', async (req, res) => {
     }
 });
 
+// ============================================================
+// SENTINEL AI — Gateway Endpoints
+// ============================================================
+
+// 5. Check AI Access (verify officer is in ledger ACL)
+app.post('/api/ai/check-access', async (req, res) => {
+    const { officerId } = req.body;
+    if (!officerId) {
+        return res.status(400).json({ error: 'Missing officerId' });
+    }
+    try {
+        const resultBytes = await contract.evaluateTransaction('CheckAIAccess', officerId);
+        const authorized = JSON.parse(new TextDecoder().decode(resultBytes));
+        res.json({ officerId, authorized });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 6. Manage AI Access (add/remove officer from ledger ACL)
+app.post('/api/ai/manage-access', async (req, res) => {
+    const { officerId, action } = req.body;
+    if (!officerId || !action) {
+        return res.status(400).json({ error: 'Missing officerId or action' });
+    }
+    try {
+        await contract.submitTransaction('ManageAIAccess', officerId, action);
+        res.json({ message: `AI access ${action} successful for ${officerId}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 7. Get All Evidence Metadata (for AI context building)
+app.get('/api/evidence/all', async (req, res) => {
+    try {
+        const resultBytes = await contract.evaluateTransaction('GetAllEvidence');
+        const evidence = JSON.parse(new TextDecoder().decode(resultBytes) || '[]');
+        res.json({ evidence });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Start express server & connect to Gateway
 app.listen(PORT, async () => {
     console.log(`Gateway API Server running on port ${PORT}`);
     await initGateway();
 });
+

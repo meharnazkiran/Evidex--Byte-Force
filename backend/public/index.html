@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/antigravity.css" />
   <link rel="stylesheet" href="./css/wormhole.css" />
+  <link rel="stylesheet" href="./css/sentinel.css" />
 </head>
 <body>
 
@@ -356,12 +357,65 @@
 
 </div>
 
+<!-- ============================================================
+     SENTINEL AI — Floating Intelligence Orb & Chat Panel
+     ============================================================ -->
+
+<!-- Floating Orb Button -->
+<div class="sentinel-orb" id="sentinel-orb" title="SENTINEL AI">
+  🧠
+  <span class="sentinel-orb-label">SENTINEL AI</span>
+</div>
+
+<!-- Chat Panel -->
+<div class="sentinel-panel" id="sentinel-panel">
+
+  <!-- Panel Header -->
+  <div class="sentinel-header">
+    <div class="sentinel-header-icon">🧠</div>
+    <div class="sentinel-header-text">
+      <h3>SENTINEL AI</h3>
+      <p>Ledger Intelligence Engine</p>
+    </div>
+    <button class="sentinel-close-btn" id="sentinel-close-btn">✕</button>
+  </div>
+
+  <!-- Auth Gate (shown first) -->
+  <div class="sentinel-auth-gate" id="sentinel-auth-gate">
+    <div class="auth-icon">🔐</div>
+    <h4>Identity Verification Required</h4>
+    <p>Enter your Officer ID to access the AI analytics layer.<br>Your identity is verified against the Hyperledger Fabric ledger ACL.</p>
+    <input type="text" class="sentinel-auth-input" id="sentinel-auth-input" placeholder="e.g. DCP_Rajesh" autocomplete="off" spellcheck="false" />
+    <button class="sentinel-auth-btn" id="sentinel-auth-btn">VERIFY IDENTITY</button>
+    <div class="sentinel-auth-error" id="sentinel-auth-error"></div>
+  </div>
+
+  <!-- Chat Area (shown after auth) -->
+  <div class="sentinel-chat-area" id="sentinel-chat-area">
+    <div class="sentinel-messages" id="sentinel-messages">
+      <!-- Typing indicator -->
+      <div class="sentinel-typing" id="sentinel-typing">
+        <div class="sentinel-typing-dot"></div>
+        <div class="sentinel-typing-dot"></div>
+        <div class="sentinel-typing-dot"></div>
+      </div>
+    </div>
+    <div class="sentinel-suggestions" id="sentinel-suggestions"></div>
+    <div class="sentinel-input-bar">
+      <input type="text" class="sentinel-chat-input" id="sentinel-chat-input" placeholder="Ask about ledger analytics..." autocomplete="off" />
+      <button class="sentinel-send-btn" id="sentinel-send-btn">▶</button>
+    </div>
+  </div>
+
+</div>
+
 <!-- Client Scripts -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="./js/particles.js"></script>
 <script src="./js/parallax.js"></script>
 <script src="./js/wormholeController.js"></script>
 <script type="module" src="./js/app.js"></script>
+<script src="./js/sentinel.js"></script>
 
 </body>
 </html>

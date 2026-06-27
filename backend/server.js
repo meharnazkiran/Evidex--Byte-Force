@@ -88,6 +88,20 @@ app.get('/evidence/history/:id', evidenceController.getHistory);
 // GET /evidence/export/:id - Generates and streams Section 63 BSA PDF certificate
 app.get('/evidence/export/:id', evidenceController.exportCertificate);
 
+// ============================================================
+// SENTINEL AI — Analytics Layer Routes
+// ============================================================
+const aiController = require('./controllers/aiController');
+
+// POST /ai/verify-access - Verify officer ID against ledger ACL
+app.post('/ai/verify-access', aiController.verifyAccess);
+
+// POST /ai/chat - Process AI analytics query (re-verifies access per request)
+app.post('/ai/chat', aiController.chat);
+
+// GET /ai/analytics - Get pre-computed ledger analytics (no LLM call)
+app.get('/ai/analytics', aiController.getAnalytics);
+
 // Health Check
 app.get('/health', (req, res) => {
   res.json({
