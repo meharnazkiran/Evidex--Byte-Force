@@ -7,7 +7,26 @@ const authMiddleware = require('./middleware/authMiddleware');
 const authController = require('./controllers/authController');
 const evidenceController = require('./controllers/evidenceController');
 
+const http = require('http');
+const { Server } = require('socket.io');
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+});
+
+// Expose Socket.io instance globally for controllers to emit real-time events
+global.io = io;
+
+io.on('connection', (socket) => {
+  console.log(`[SOCKET] Client connected: ${socket.id}`);
+  socket.on('disconnect', () => {
+    console.log(`[SOCKET] Client disconnected: ${socket.id}`);
+  });
+});
 
 // 1. Basic Middleware
 app.use(express.json());
@@ -66,6 +85,9 @@ app.get(
 // GET /evidence/history/:id - Retrieves full audit history timeline
 app.get('/evidence/history/:id', evidenceController.getHistory);
 
+// GET /evidence/export/:id - Generates and streams Section 63 BSA PDF certificate
+app.get('/evidence/export/:id', evidenceController.exportCertificate);
+
 // Health Check
 app.get('/health', (req, res) => {
   res.json({
@@ -91,7 +113,7 @@ async function startServer() {
   await caService.initCA();
   await fabricService.initFabric();
 
-  app.listen(config.PORT, () => {
+  server.listen(config.PORT, () => {
     console.log(`Backend API Server running at http://localhost:${config.PORT}`);
     console.log('Press Ctrl+C to terminate.');
   });

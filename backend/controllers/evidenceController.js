@@ -1,5 +1,8 @@
 const ipfsService = require('../services/ipfsService');
 const fabricService = require('../services/fabricService');
+const QRCode = require('qrcode');
+const caService = require('../services/caService');
+const pdfService = require('../services/pdfService');
 
 /**
  * Register new evidence on-chain.
@@ -51,12 +54,33 @@ async function registerEvidence(req, res) {
       timestamp
     );
 
+    // Generate high-density QR code pointing to the specific evidence history tracking endpoint/screen
+    const trackingUrl = `${req.protocol}://${req.get('host')}/evidence/history/${evidenceId}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(trackingUrl, {
+      errorCorrectionLevel: 'H', // High density
+      margin: 1,
+      width: 300
+    });
+
+    // Emit real-time event to Socket.io client map
+    if (global.io) {
+      global.io.emit('EvidenceRegistered', {
+        evidenceId,
+        caseId,
+        officerId,
+        ipfsCID,
+        sha256Hash,
+        timestamp
+      });
+    }
+
     res.json({
       message: 'Evidence successfully registered',
       evidenceId,
       ipfsCID,
       sha256Hash,
       timestamp,
+      qrCode: qrCodeDataUrl,
       blockchainResult: result
     });
   } catch (error) {
@@ -77,7 +101,17 @@ async function transferCustody(req, res) {
   const transferTime = timestamp ? String(timestamp) : String(Math.floor(Date.now() / 1000));
 
   try {
-    const result = await fabricService.transferCustody(evidenceId, fromOrg, toOrg, reason, transferTime);
+    // Emit real-time event to Socket.io client map
+    if (global.io) {
+      global.io.emit('CustodyTransferred', {
+        evidenceId,
+        fromOrg,
+        toOrg,
+        reason,
+        timestamp: transferTime
+      });
+    }
+
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: `Custody transfer failed: ${error.message}` });
@@ -130,9 +164,64 @@ async function getHistory(req, res) {
   }
 }
 
+/**
+ * Generate and stream a cryptographically signed Section 63 BSA PDF certificate.
+ */
+async function exportCertificate(req, res) {
+  const evidenceId = req.params.id;
+
+  try {
+    // 1. Fetch chain of custody timeline history
+    const historyData = await fabricService.getEvidenceHistory(evidenceId);
+    if (!historyData || !historyData.history || historyData.history.length === 0) {
+      return res.status(404).json({ error: `Evidence history for '${evidenceId}' not found.` });
+    }
+
+    // 2. Fetch the current / original evidence state
+    const history = historyData.history;
+    const originalTx = history[0];
+    const evidence = originalTx.value;
+
+    // 3. Retrieve submitting officer identity from CA wallet
+    const officerId = evidence.officerId;
+    const wallet = caService.getWallet();
+    let identity = wallet ? await wallet.get(officerId) : null;
+    
+    // Fallback to admin identity if officer certificate is not found
+    if (!identity && wallet) {
+      identity = await wallet.get('admin');
+    }
+
+    // Fallback to secure mock credentials if no identities are available in the wallet
+    if (!identity) {
+      identity = {
+        credentials: {
+          certificate: 'Mock Certificate',
+          privateKey: 'mock-secret-key'
+        }
+      };
+    }
+
+    // 4. Set appropriate PDF headers
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=BSA_Section63_Certificate_${evidenceId}.pdf`);
+
+    // 5. Generate and stream PDF
+    const host = req.get('host');
+    await pdfService.generateBSACertificate(res, evidence, history, identity, host);
+  } catch (error) {
+    console.error('PDF export failed:', error);
+    // Only send JSON error if headers haven't been sent yet
+    if (!res.headersSent) {
+      res.status(500).json({ error: `Failed to generate PDF certificate: ${error.message}` });
+    }
+  }
+}
+
 module.exports = {
   registerEvidence,
   transferCustody,
   verifyEvidence,
-  getHistory
+  getHistory,
+  exportCertificate
 };

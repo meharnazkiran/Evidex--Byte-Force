@@ -590,6 +590,109 @@ function loadBsaCertificate(evidenceId, hash, ipfsCid, officerId, caseId, locati
   printCertBtn.disabled = false;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Real-Time Socket.io Connection & Events (Hackathon Network Map)
+// ─────────────────────────────────────────────────────────────────────────────
+
+if (typeof io !== 'undefined') {
+  const socket = io();
+  console.log('[SOCKET] Connecting to real-time sync server...');
+
+  socket.on('connect', () => {
+    console.log('[SOCKET] Connected to real-time server. ID:', socket.id);
+    flashRealtimeAlert('System Connected: Real-time Blockchain Event Feed Active', 'success');
+  });
+
+  // Listen for new evidence registered on the chain
+  socket.on('EvidenceRegistered', (data) => {
+    console.log('[SOCKET] EvidenceRegistered received:', data);
+    
+    // Trigger visual notification popup
+    flashRealtimeAlert(`🔒 [LEDGER] New Evidence Registered: <b>${data.evidenceId}</b> (Case: ${data.caseId})`, 'success');
+    
+    // Update the 3D core cube hash visually
+    if (typeof updateCubeHash === 'function') {
+      updateCubeHash(data.sha256Hash);
+    }
+    
+    // Trigger the cosmic particle transit pulse animation (Police -> Forensic Lab)
+    if (window.evidexWormhole) {
+      window.evidexWormhole.currentStep = 0; // Route: Police -> Lab
+      window.evidexWormhole.executeWormholeTravel();
+    }
+  });
+
+  // Listen for custody transferred on the chain
+  socket.on('CustodyTransferred', (data) => {
+    console.log('[SOCKET] CustodyTransferred received:', data);
+    
+    // Trigger visual notification popup
+    flashRealtimeAlert(`🔄 [LEDGER] Custody Handed Over: <b>${data.evidenceId}</b> to <b>${data.toOrg}</b>`, 'info');
+    
+    // Trigger the cosmic particle transit pulse animation (Forensic Lab -> Judicial Court)
+    if (window.evidexWormhole) {
+      window.evidexWormhole.currentStep = 1; // Route: Lab -> Court
+      window.evidexWormhole.executeWormholeTravel();
+    }
+  });
+}
+
+/**
+ * Creates and displays a glowing real-time alert toast in the HUD dashboard
+ */
+function flashRealtimeAlert(message, type = 'info') {
+  // Find or create notification container
+  let container = document.getElementById('hud-notification-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'hud-notification-container';
+    container.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 380px;
+    `;
+    document.body.appendChild(container);
+  }
+
+  // Create alert element
+  const toast = document.createElement('div');
+  toast.className = `realtime-toast toast-${type}`;
+  toast.style.cssText = `
+    background: rgba(10, 15, 30, 0.85);
+    border: 1px solid ${type === 'success' ? '#10B981' : '#06B6D4'};
+    box-shadow: 0 0 15px ${type === 'success' ? 'rgba(16,185,129,0.3)' : 'rgba(6,182,212,0.3)'};
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 16px;
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  `;
+  
+  toast.innerHTML = message;
+  container.appendChild(toast);
+
+  // Force reflow and slide in
+  void toast.offsetWidth;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+
+  // Slide out and remove
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-20px)';
+    setTimeout(() => toast.remove(), 400);
+  }, 5000);
+}
+
 // Print Handler
 printCertBtn.addEventListener("click", () => {
   const printableArea = document.getElementById("printable-certificate-card");
