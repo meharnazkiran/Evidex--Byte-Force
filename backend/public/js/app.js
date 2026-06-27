@@ -63,6 +63,7 @@ const historyTimelineBox = document.getElementById("history-timeline-box");
 // Module 6: Certificate Viewer
 const certificatePrintArea = document.getElementById("certificate-print-area");
 const printCertBtn = document.getElementById("print-cert-btn");
+const exportCertBtn = document.getElementById("export-cert-btn");
 
 // Centerpiece 3D block
 const coreCubeElement = document.getElementById("evidentiary-core-cube");
@@ -286,6 +287,8 @@ pipelineBtn.addEventListener("click", async () => {
       coreCubeElement.classList.add("verified");
     }
 
+    const qrCodeHtml = regData.qrCode ? `\n<div style="margin-top: 15px; text-align: center;"><img src="${regData.qrCode}" style="border: 4px solid #ffffff; border-radius: 4px; width: 120px;" /><div style="font-size: 0.75rem; color: var(--neon-cyan); margin-top: 5px;">Digital Twin Tracking Tag</div></div>` : '';
+
     showOutput(pipelineOutput, [
       `[ BLOCKCHAIN SECURED CUSTODY RECORD ]`,
       `<span class="hud-hash-label">EVIDENCE ID:</span>  <span class="hud-hash-value">${activeEvidenceId}</span>`,
@@ -294,7 +297,8 @@ pipelineBtn.addEventListener("click", async () => {
       `<span class="hud-hash-label">IPFS CID:</span>     <span class="hud-hash-value">${regData.ipfsCID}</span>`,
       `<span class="hud-hash-label">CUSTODIAN:</span>    Tamil Nadu Police Dept (Node 01)`,
       `\n✅ CUSTODY TRANSACTION SUBMITTED. FABRIC BLOCK COMMITTED SUCCESSFULLY.`,
-      `⚙️  VERIFIED LIVE ON HYPERLEDGER FABRIC TEST-NETWORK.`
+      `⚙️  VERIFIED LIVE ON HYPERLEDGER FABRIC TEST-NETWORK.`,
+      qrCodeHtml
     ].join("\n"));
 
     // Enable and show Handoff options
@@ -535,6 +539,7 @@ verifyBtn.addEventListener("click", async () => {
       // Clear Certificate Viewer
       certificatePrintArea.innerHTML = `<div style="color: var(--glow-crimson); text-align: center; padding: 40px 0;">Admissibility Certificate Voided. Integrity verification failed (tampered file).</div>`;
       printCertBtn.disabled = true;
+      if (exportCertBtn) exportCertBtn.disabled = true;
     }
   } catch (err) {
     showOutput(verifyOutput, `❌ Verification Request Refused: ${err.message}`);
@@ -588,6 +593,7 @@ function loadBsaCertificate(evidenceId, hash, ipfsCid, officerId, caseId, locati
     </div>
   `;
   printCertBtn.disabled = false;
+  if (exportCertBtn) exportCertBtn.disabled = false;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -765,3 +771,23 @@ printCertBtn.addEventListener("click", () => {
   `);
   printWindow.document.close();
 });
+
+// Export Certificate PDF Handler (One-Click Legal Export)
+if (exportCertBtn) {
+  exportCertBtn.addEventListener("click", () => {
+    if (!activeEvidenceId) return;
+    window.open(`${API_BASE_URL}/evidence/export/${activeEvidenceId}`);
+  });
+}
+
+// Map manual custody transfer locations to corresponding wormhole animation routes
+window.fireWormhole = function(fromOrg, toOrg) {
+  if (window.evidexWormhole) {
+    if (fromOrg === "PoliceDept" && toOrg === "ForensicLab") {
+      window.evidexWormhole.currentStep = 0;
+    } else if (fromOrg === "ForensicLab" && toOrg === "JudicialCourt") {
+      window.evidexWormhole.currentStep = 1;
+    }
+    window.evidexWormhole.executeWormholeTravel();
+  }
+};
