@@ -29,7 +29,7 @@
 <!-- Global Zero-Gravity Perspective Frame -->
 <div class="antigravity-workspace-envelope">
 
-  <!-- Layer 2: Central Volumetric Light Axis & Emission Base (Cloned from reference image) -->
+  <!-- Volumetric Light Axis & Emission Base -->
   <div class="core-integrity-beam-container" id="global-beam-axis">
     <div class="ambient-glow-sleeve"></div>
     <div class="emission-disk-base"></div>
@@ -39,45 +39,51 @@
   <div class="app-container">
 
     <!-- Titanic Header -->
-    <div class="container text-center pt-5 position-relative" style="z-index: 10; margin-bottom: 40px;">
+    <div class="container text-center pt-5 position-relative" style="z-index: 10; margin-bottom: 20px;">
       <h1 class="brand-title-massive">EVIDEX</h1>
       <p class="text-muted font-monospace tracking-wide text-uppercase" style="letter-spacing: 3px; font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 10px; margin-bottom: 20px;">
         Hyperledger Fabric // Cryptographic Chain-of-Custody Framework
       </p>
-      <!-- Dedicated Handoff Trigger (Wormhole Sequence) -->
-      <div class="text-center position-relative" style="z-index: 100; margin-bottom: 10px;">
-        <button class="btn btn--outline font-monospace py-3 px-5 text-uppercase tracking-wider" 
-                id="trigger-handoff-sequence-btn" 
-                style="border-radius: 30px; border-color: var(--neon-green); color: #ffffff; text-shadow: 0 0 10px var(--neon-green); font-size: 0.85rem; font-weight: 800;">
-          Execute Chain-of-Custody Handoff
-        </button>
+    </div>
+
+    <!-- MODULE 1: SYSTEM DASHBOARD PANEL -->
+    <div class="hud-card" id="section-dashboard" style="margin-bottom: 30px;">
+      <div class="hud-card__header">
+        <div class="hud-card__icon" style="color: var(--glow-cyan); border-color: rgba(0, 240, 255, 0.2); background: rgba(0, 240, 255, 0.05);">📡</div>
+        <div>
+          <div class="hud-card__title">Cosmic Console Dashboard</div>
+          <div class="hud-card__subtitle">System environment configuration & ledger node telemetry</div>
+        </div>
+      </div>
+      
+      <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; font-family: var(--font-mono); font-size: 0.8rem;">
+        <div class="dashboard-stat-box" style="padding: 15px; background: rgba(1, 4, 6, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+          <span style="color: var(--text-muted); font-size: 0.7rem; display: block; text-transform: uppercase;">CONNECTED ORG</span>
+          <span id="dash-connected-org" style="color: var(--text-pure); font-weight: 700; font-size: 0.95rem;">Tamil Nadu Police (Org1)</span>
+        </div>
+        <div class="dashboard-stat-box" style="padding: 15px; background: rgba(1, 4, 6, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+          <span style="color: var(--text-muted); font-size: 0.7rem; display: block; text-transform: uppercase;">FABRIC CA SERVICE</span>
+          <span id="dash-ca-status" style="color: var(--neon-green); font-weight: 700; font-size: 0.95rem; text-shadow: 0 0 10px rgba(0,255,140,0.3);">● ONLINE</span>
+        </div>
+        <div class="dashboard-stat-box" style="padding: 15px; background: rgba(1, 4, 6, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+          <span style="color: var(--text-muted); font-size: 0.7rem; display: block; text-transform: uppercase;">LEDGER CHANNEL</span>
+          <span id="dash-channel" style="color: var(--text-pure); font-weight: 700; font-size: 0.95rem;">mychannel (Live Peer0)</span>
+        </div>
+        <div class="dashboard-stat-box" style="padding: 15px; background: rgba(1, 4, 6, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+          <span style="color: var(--text-muted); font-size: 0.7rem; display: block; text-transform: uppercase;">LEDGER MODE</span>
+          <span id="dash-ledger-mode" style="color: var(--glow-cyan); font-weight: 700; font-size: 0.95rem; text-shadow: 0 0 10px rgba(0,240,255,0.3);">CONNECTING...</span>
+        </div>
       </div>
     </div>
 
-    <!-- 3D Dimensional Gyroscope & Core Crystal (The Evidentiary Vault) -->
+    <!-- Centerpiece 3D Crystal Core (Integrity Status Visualizer) -->
     <div class="gyro-vault-sphere" id="gyro-vault-container">
       
-      <!-- Vector Ring 01: Outer Ring (Cryptographic Hash) -->
-      <div class="gyro-ring gyro-ring--outer">
-        <div class="gyro-telemetry font-monospace">HASH // SHA-256</div>
+      <!-- Vector Ring 01: Core Status Orbit (Single Ring) -->
+      <div class="gyro-ring gyro-ring--middle" style="width: 280px; height: 280px; border-color: rgba(0, 240, 255, 0.15);">
+        <div class="gyro-telemetry font-monospace" id="core-status-text" style="color: var(--glow-cyan);">INTEGRITY CORE // SECURE</div>
         <svg viewBox="0 0 100 100" class="gyro-svg">
-          <circle cx="50" cy="50" r="47" class="gyro-circle" />
-        </svg>
-      </div>
-
-      <!-- Vector Ring 02: Middle Ring (AES-256 Encryption) -->
-      <div class="gyro-ring gyro-ring--middle">
-        <div class="gyro-telemetry font-monospace">CIPHER // AES-256</div>
-        <svg viewBox="0 0 100 100" class="gyro-svg">
-          <circle cx="50" cy="50" r="47" class="gyro-circle" />
-        </svg>
-      </div>
-
-      <!-- Vector Ring 03: Inner Ring (IPFS Storage) -->
-      <div class="gyro-ring gyro-ring--inner">
-        <div class="gyro-telemetry font-monospace">LEDGER // IPFS</div>
-        <svg viewBox="0 0 100 100" class="gyro-svg">
-          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+          <circle cx="50" cy="50" r="47" class="gyro-circle" style="stroke: var(--cyber-cyan);" />
         </svg>
       </div>
 
@@ -115,11 +121,11 @@
       
     </div>
 
-    <!-- Layer 2 Continuum: Midground Rotating Node Constellations -->
-    <div class="section-tagline">Handoff Continuum Trackers</div>
+    <!-- MODULE 3: CHAIN OF CUSTODY TIMELINE & NODE TRANSFERS -->
+    <div class="section-tagline">Interactive Handoff Continuum</div>
     <div class="handoff-continuum">
       
-      <!-- Node 01: TN Police (Origin Ring) -->
+      <!-- Node 01: TN Police (Origin) -->
       <div id="node-police" class="node-constellation active" style="--drift-duration: 5.2s;">
         <div class="concentric-ring ring-x"></div>
         <div class="concentric-ring ring-y"></div>
@@ -160,33 +166,73 @@
 
     </div>
 
-    <!-- Layer 3: Interactive Proof Vault (Foreground Panels) -->
-    
-    <!-- 1. End-to-End Core Pipeline Card -->
-    <div class="section-tagline">Main Handoff Action</div>
-    <div class="hud-card tilt-card" id="section-pipeline">
+    <!-- Interactive Handoff Execution Panel (Timeline Actions) -->
+    <div class="hud-card" id="section-handoff-action" style="display: none; margin-bottom: 40px; border-top-color: var(--glow-amber) !important;">
       <div class="hud-card__header">
-        <div class="hud-card__icon hud-card__icon--pipeline">🚀</div>
+        <div class="hud-card__icon" style="color: var(--glow-amber); border-color: rgba(255, 184, 0, 0.2); background: rgba(255, 184, 0, 0.05);">🤝</div>
         <div>
-          <div class="hud-card__title">Submit New Evidence to Fabric</div>
-          <div class="hud-card__subtitle">Auto-calculates SHA-256, encrypts client-side, pins to IPFS, and registers metadata</div>
+          <div class="hud-card__title">Execute Custody Transfer</div>
+          <div class="hud-card__subtitle">Log custody handover of active evidence to a new organization on-chain</div>
         </div>
       </div>
       
       <div class="form-row">
-        <label for="pipeline-file-input">Select Evidence File</label>
-        <input type="file" id="pipeline-file-input" />
+        <label for="handoff-evidence-id">Active Evidence ID</label>
+        <input type="text" id="handoff-evidence-id" readonly style="opacity: 0.8;" />
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="handoff-from-org">Transferring Organization (From)</label>
+          <input type="text" id="handoff-from-org" readonly style="opacity: 0.8;" />
+        </div>
+        <div class="form-row">
+          <label for="handoff-to-org">Recipient Organization (To)</label>
+          <select id="handoff-to-org" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: rgba(1, 7, 10, 0.8); color: var(--text-pure); font-family: var(--font-mono); outline: none;">
+            <option value="ForensicLab">Forensic Lab (Node 02)</option>
+            <option value="JudicialCourt">Judicial Court (Node 03)</option>
+            <option value="PoliceDept">TN Police Dept (Node 01)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="handoff-reason">Reason for Handoff</label>
+        <input type="text" id="handoff-reason" placeholder="e.g. Chemical testing, forensic disk cloning, court presentation" />
+      </div>
+
+      <button class="btn btn--primary" id="handoff-submit-btn" style="background: linear-gradient(135deg, #ffb800 0%, #b38000 100%); box-shadow: 0 4px 15px rgba(255, 184, 0, 0.25);">
+        <span class="spinner"></span>
+        <span class="btn-text">Confirm Custody Handoff</span>
+      </button>
+      <div class="hud-output" id="handoff-output"></div>
+    </div>
+
+    <!-- MODULE 2: EVIDENCE REGISTRATION -->
+    <div class="section-tagline">Evidence Capture Portal</div>
+    <div class="hud-card" id="section-registration">
+      <div class="hud-card__header">
+        <div class="hud-card__icon" style="color: var(--neon-green);">🚀</div>
+        <div>
+          <div class="hud-card__title">Register New Evidence</div>
+          <div class="hud-card__subtitle">Automatically hashes, encrypts, uploads to IPFS, and logs registry to Hyperledger</div>
+        </div>
       </div>
       
       <div class="form-row">
-        <label for="pipeline-pinata-key">Pinata JWT Token</label>
-        <input type="text" id="pipeline-pinata-key" placeholder="eyJhbGciOiJIUzI1NiIs..." />
+        <label for="pipeline-file-input">Evidence File Payload</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="file" id="pipeline-file-input" />
+          <button type="button" class="btn btn--outline" id="pipeline-file-test-btn" style="padding: 6px 12px; font-size: 0.75rem; margin-top: 0; width: auto; border-color: var(--glow-cyan); color: var(--glow-cyan);">Use Test File</button>
+        </div>
       </div>
+      
+
       
       <div class="form-grid">
         <div class="form-row">
-          <label for="pipeline-officer-id">Seizing Officer ID</label>
-          <input type="text" id="pipeline-officer-id" placeholder="OFF-1092" />
+          <label for="pipeline-officer-id">Seizing Officer ID / Username</label>
+          <input type="text" id="pipeline-officer-id" placeholder="Officer_Smith" value="Officer_Smith" />
         </div>
         <div class="form-row">
           <label for="pipeline-case-id">FIR / Case Reference</label>
@@ -196,144 +242,88 @@
       
       <div class="form-row">
         <label for="pipeline-location">Collection &amp; Seizure Location</label>
-        <input type="text" id="pipeline-location" placeholder="Integrated Cyber Forensic Cell, TN" />
+        <input type="text" id="pipeline-location" placeholder="Integrated Cyber Forensic Cell, Chennai" value="Integrated Cyber Forensic Cell, Chennai" />
       </div>
       
       <button class="btn btn--primary" id="pipeline-btn" disabled>
         <span class="spinner"></span>
-        <span class="btn-text">Execute Chain-of-Custody Handoff</span>
+        <span class="btn-text">Log Evidence to Blockchain</span>
       </button>
+
+      <!-- Step Pipeline Progress Indicators -->
+      <div id="pipeline-steps-box" style="display: none; margin-top: 20px; padding: 15px; background: rgba(1, 4, 6, 0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8;">
+        <div id="step-hash" style="color: var(--text-muted);">○ Computing digital SHA-256 fingerprint...</div>
+        <div id="step-encrypt" style="color: var(--text-muted);">○ Locking payload with AES-256-GCM...</div>
+        <div id="step-ipfs" style="color: var(--text-muted);">○ Uploading encrypted payload to decentralized IPFS...</div>
+        <div id="step-ledger" style="color: var(--text-muted);">○ Securing transaction blocks on Hyperledger Fabric...</div>
+      </div>
       
       <div class="hud-output" id="pipeline-output"></div>
     </div>
 
-    <!-- 2. Interactive Offline Simulation Card (Self-contained Demo) -->
-    <div class="section-tagline">Local Evaluation Deck</div>
-    <div class="hud-card tilt-card" id="section-offline-demo">
+    <!-- MODULE 4: INTEGRITY VERIFICATION -->
+    <div class="section-tagline">Forensic Audit Console</div>
+    <div class="hud-card" id="section-verification">
       <div class="hud-card__header">
-        <div class="hud-card__icon hud-card__icon--verify">🧪</div>
+        <div class="hud-card__icon" style="color: var(--glow-amber); border-color: rgba(255, 184, 0, 0.2); background: rgba(255, 184, 0, 0.05);">⚖️</div>
         <div>
-          <div class="hud-card__title">Forensic Walkthrough Simulator</div>
-          <div class="hud-card__subtitle">Test the full tamper-detection cycle offline instantly with mock blockchain states</div>
+          <div class="hud-card__title">Verify Evidence Integrity</div>
+          <div class="hud-card__subtitle">Cross-checks local file hashes with the original blockchain registry state</div>
         </div>
       </div>
-      
       <div class="form-row">
-        <label for="demo-file-input">Select Mock Evidence File</label>
-        <input type="file" id="demo-file-input" />
+        <label for="verify-id-input">Fabric Evidence ID</label>
+        <input type="text" id="verify-id-input" placeholder="EVD-xxxx" />
       </div>
-      
-      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button class="btn btn--primary" id="demo-register-btn" disabled>
-          <span class="spinner"></span>
-          <span class="btn-text">① Log Entry (Hash &amp; Encrypt)</span>
-        </button>
-        <button class="btn btn--outline" id="demo-verify-match-btn" disabled>
-          <span class="btn-text">② Verify Identical File (MATCH)</span>
-        </button>
-        <button class="btn btn--danger" id="demo-verify-tamper-btn" disabled>
-          <span class="btn-text">③ Simulate Tamper Check (TAMPERED)</span>
-        </button>
-      </div>
-      
-      <div class="hud-output" id="demo-output"></div>
-    </div>
-
-    <!-- 3. Granular Utilities (Individual Functions Demos) -->
-    <div class="section-tagline">Granular Utility Console</div>
-    
-    <div class="form-grid">
-      
-      <!-- Hashing Card -->
-      <div class="hud-card tilt-card" id="section-hash">
-        <div class="hud-card__header">
-          <div class="hud-card__icon hud-card__icon--hash">🔐</div>
-          <div>
-            <div class="hud-card__title">SHA-256 Generator</div>
-            <div class="hud-card__subtitle">Calculate file integrity fingerprint</div>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="hash-file-input">File Stream</label>
-          <input type="file" id="hash-file-input" />
-        </div>
-        <button class="btn btn--outline" id="hash-btn" disabled>
-          <span class="spinner"></span>
-          <span class="btn-text">Compute Hash</span>
-        </button>
-        <div class="hud-output" id="hash-output"></div>
-      </div>
-
-      <!-- Encryption Card -->
-      <div class="hud-card tilt-card" id="section-encrypt">
-        <div class="hud-card__header">
-          <div class="hud-card__icon hud-card__icon--encrypt">🛡️</div>
-          <div>
-            <div class="hud-card__title">AES Encryption Vault</div>
-            <div class="hud-card__subtitle">Symmetric AES-256-GCM cipher lock</div>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="encrypt-file-input">Target Plaintext</label>
-          <input type="file" id="encrypt-file-input" />
-        </div>
-        <button class="btn btn--outline" id="encrypt-btn" disabled>
-          <span class="spinner"></span>
-          <span class="btn-text">Encrypt Payload</span>
-        </button>
-        <div class="hud-output" id="encrypt-output"></div>
-      </div>
-
-    </div>
-
-    <div class="form-grid">
-      
-      <!-- IPFS Upload Card -->
-      <div class="hud-card tilt-card" id="section-upload">
-        <div class="hud-card__header">
-          <div class="hud-card__icon hud-card__icon--encrypt">☁️</div>
-          <div>
-            <div class="hud-card__title">IPFS Distributed Push</div>
-            <div class="hud-card__subtitle">Publish binaries to Pinata IPFS nodes</div>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="upload-file-input">Encrypted Payload (.bin)</label>
-          <input type="file" id="upload-file-input" />
-        </div>
-        <div class="form-row">
-          <label for="pinata-key-input">Pinata API JWT Key</label>
-          <input type="text" id="pinata-key-input" placeholder="eyJhbGciOiJIUzI1NiIs..." />
-        </div>
-        <button class="btn btn--outline" id="upload-btn" disabled>
-          <span class="spinner"></span>
-          <span class="btn-text">Push Pin</span>
-        </button>
-        <div class="hud-output" id="upload-output"></div>
-      </div>
-
-      <!-- API verification Card -->
-      <div class="hud-card tilt-card" id="section-verify">
-        <div class="hud-card__header">
-          <div class="hud-card__icon hud-card__icon--verify">⚖️</div>
-          <div>
-            <div class="hud-card__title">API Integrity Lookup</div>
-            <div class="hud-card__subtitle">Cross-check database record via API</div>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="verify-id-input">Fabric Evidence ID</label>
-          <input type="text" id="verify-id-input" placeholder="EVD-001" />
-        </div>
-        <div class="form-row">
-          <label for="verify-file-input">Target Verification File</label>
+      <div class="form-row">
+        <label for="verify-file-input">Target Verification File</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
           <input type="file" id="verify-file-input" />
+          <button type="button" class="btn btn--outline" id="verify-file-test-btn" style="padding: 6px 12px; font-size: 0.75rem; margin-top: 0; width: auto; border-color: var(--glow-cyan); color: var(--glow-cyan);">Use Test File</button>
         </div>
-        <button class="btn btn--outline" id="verify-btn" disabled>
-          <span class="spinner"></span>
-          <span class="btn-text">Audit Record Integrity</span>
+      </div>
+      <button class="btn btn--outline" id="verify-btn" disabled>
+        <span class="spinner"></span>
+        <span class="btn-text">Audit Record Integrity</span>
+      </button>
+      <div class="hud-output" id="verify-output"></div>
+    </div>
+
+    <!-- MODULE 5 & 6: TIMELINE & CERTIFICATE VIEWER PANES -->
+    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+      
+      <!-- MODULE 5: EVIDENCE HISTORY TIMELINE -->
+      <div class="hud-card" id="section-history" style="min-height: 400px;">
+        <div class="hud-card__header">
+          <div class="hud-card__icon" style="color: var(--glow-cyan); border-color: rgba(0, 240, 255, 0.2); background: rgba(0, 240, 255, 0.05);">⏳</div>
+          <div>
+            <div class="hud-card__title">Chain of Custody Audit Log</div>
+            <div class="hud-card__subtitle">Chronological ledger timeline of selected evidence</div>
+          </div>
+        </div>
+        
+        <div id="history-timeline-box" style="font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6; color: var(--text-secondary); max-height: 380px; overflow-y: auto;">
+          <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">No active evidence selected. Log or verify an item to inspect ledger history.</div>
+        </div>
+      </div>
+
+      <!-- MODULE 6: CERTIFICATE VIEWER -->
+      <div class="hud-card" id="section-certificate" style="min-height: 400px; border-top-color: var(--neon-green) !important;">
+        <div class="hud-card__header">
+          <div class="hud-card__icon" style="color: var(--neon-green);">📜</div>
+          <div>
+            <div class="hud-card__title">BSA §63 Certificate Viewer</div>
+            <div class="hud-card__subtitle">Review and print courtroom admissibility certificates</div>
+          </div>
+        </div>
+        
+        <div id="certificate-print-area" style="max-height: 380px; overflow-y: auto;">
+          <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">No certificate generated. Successfully verify authentic evidence to preview certificate.</div>
+        </div>
+        
+        <button class="btn btn--outline" id="print-cert-btn" disabled style="width: 100%; margin-top: 15px; border-color: var(--neon-green); color: var(--neon-green);">
+          <span>Print / Export Admissibility Certificate</span>
         </button>
-        <div class="hud-output" id="verify-output"></div>
       </div>
 
     </div>

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -21,9 +22,9 @@ type Evidence struct {
 	IpfsCID    string `json:"ipfsCID"`
 	Sha256Hash string `json:"sha256Hash"`
 	Timestamp  string `json:"timestamp"`
-	FromOrg    string `json:"fromOrg,omitempty"`
-	ToOrg      string `json:"toOrg,omitempty"`
-	Reason     string `json:"reason,omitempty"`
+	FromOrg    string `json:"fromOrg"`
+	ToOrg      string `json:"toOrg"`
+	Reason     string `json:"reason"`
 }
 
 // VerificationResult defines the structure for integrity verification response
@@ -59,6 +60,14 @@ type TransferCustodyEvent struct {
 
 // RegisterEvidence registers a new evidence item on the ledger
 func (c *EvidenceContract) RegisterEvidence(ctx contractapi.TransactionContextInterface, evidenceID string, caseID string, officerID string, ipfsCID string, sha256Hash string, timestamp string) error {
+	// Assert dynamic role attributes (officer role required to submit evidence)
+	roleValue, found, err := cid.GetAttributeValue(ctx.GetStub(), "evidex.role")
+	if err == nil && found {
+		if roleValue != "officer" {
+			return fmt.Errorf("unauthorized: client certificate role is '%s', must be 'officer' to register evidence", roleValue)
+		}
+	}
+
 	exists, err := c.EvidenceExists(ctx, evidenceID)
 	if err != nil {
 		return err
@@ -103,6 +112,14 @@ func (c *EvidenceContract) RegisterEvidence(ctx contractapi.TransactionContextIn
 
 // TransferCustody transfers custody of an evidence item to a new organisation
 func (c *EvidenceContract) TransferCustody(ctx contractapi.TransactionContextInterface, evidenceID string, fromOrg string, toOrg string, reason string, timestamp string) error {
+	// Assert dynamic role attributes (officer or lab role required to transfer custody)
+	roleValue, found, err := cid.GetAttributeValue(ctx.GetStub(), "evidex.role")
+	if err == nil && found {
+		if roleValue != "officer" && roleValue != "lab" {
+			return fmt.Errorf("unauthorized: client certificate role is '%s', must be 'officer' or 'lab' to transfer custody", roleValue)
+		}
+	}
+
 	evidence, err := c.ReadEvidence(ctx, evidenceID)
 	if err != nil {
 		return err

@@ -154,7 +154,7 @@ app.post('/api/evidence/verify', async (req, res) => {
 
     try {
         const resultBytes = await contract.evaluateTransaction('VerifyIntegrity', evidenceId, providedHash);
-        const result = JSON.parse(resultBytes.toString());
+        const result = JSON.parse(new TextDecoder().decode(resultBytes));
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -166,7 +166,7 @@ app.get('/api/evidence/history/:id', async (req, res) => {
     const evidenceId = req.params.id;
     try {
         const resultBytes = await contract.evaluateTransaction('GetEvidenceHistory', evidenceId);
-        const history = JSON.parse(resultBytes.toString() || '[]');
+        const history = JSON.parse(new TextDecoder().decode(resultBytes) || '[]');
         res.json({ evidenceId, history });
     } catch (error) {
         res.status(500).json({ error: error.message });

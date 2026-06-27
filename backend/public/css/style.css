@@ -271,3 +271,31 @@ input[type="file"]::file-selector-button:hover {
   background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
   margin: 32px 0;
 }
+
+/* Dashboard Stat Box */
+.dashboard-stat-box {
+  transition: all var(--transition-fast);
+}
+
+.dashboard-stat-box:hover {
+  border-color: var(--glow-cyan) !important;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* Timeline Custom Scrollbar overrides */
+#history-timeline-box::-webkit-scrollbar,
+#certificate-print-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+#history-timeline-box::-webkit-scrollbar-thumb,
+#certificate-print-area::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.1);
+}
+
+/* Admissibility Certificate Seal details */
+.bsa-certificate__seal span {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
