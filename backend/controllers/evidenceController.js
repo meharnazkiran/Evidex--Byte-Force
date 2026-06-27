@@ -101,6 +101,8 @@ async function transferCustody(req, res) {
   const transferTime = timestamp ? String(timestamp) : String(Math.floor(Date.now() / 1000));
 
   try {
+    const result = await fabricService.transferCustody(evidenceId, fromOrg, toOrg, reason, transferTime);
+
     // Emit real-time event to Socket.io client map
     if (global.io) {
       global.io.emit('CustodyTransferred', {
