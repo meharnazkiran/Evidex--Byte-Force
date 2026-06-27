@@ -21,19 +21,34 @@ async function initCA() {
     wallet = await Wallets.newFileSystemWallet(config.WALLET_PATH);
     console.log(`Fabric Wallet initialized at: ${config.WALLET_PATH}`);
     
-    // 2. Initialize Fabric CA Client
-    console.log(`Connecting to Fabric CA at: ${config.CA_URL}`);
-    caClient = new FabricCAServices(config.CA_URL, null, config.CA_NAME);
-    
-    // Test CA connection (or check if CA container is up)
-    // If it fails, we fall back to Mock mode.
+    // Load Org1 CA's TLS certificate
+    const caTLSCertPath = path.resolve('C:/Users/mages/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem');
+    let pem;
     try {
-      // Small timeout probe to check if CA is online
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
-      await fetch(config.CA_URL, { signal: controller.signal }).catch(() => { throw new Error('Unreachable'); });
-      clearTimeout(timeoutId);
-      console.log('Fabric CA server is ONLINE.');
+      pem = await fs.readFile(caTLSCertPath, 'utf8');
+      console.log('Loaded CA TLS certificate PEM successfully.');
+    } catch (err) {
+      // Fallback inside WSL or custom relative paths
+      pem = await fs.readFile('/mnt/c/Users/mages/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem', 'utf8');
+    }
+
+    // 2. Initialize Fabric CA Client using TLS
+    const secureCAUrl = config.CA_URL.replace('http:', 'https:');
+    console.log(`Connecting to Fabric CA at: ${secureCAUrl}`);
+    caClient = new FabricCAServices(secureCAUrl, { trustedRoots: [pem], verify: false }, config.CA_NAME);
+    
+    // Test CA connection probe (check if CA socket is open)
+    try {
+      const net = require('net');
+      await new Promise((resolve, reject) => {
+        const socket = net.createConnection(7054, 'localhost', () => {
+          socket.end();
+          resolve();
+        });
+        socket.on('error', reject);
+        setTimeout(() => { socket.destroy(); reject(new Error('Timeout')); }, 1500);
+      });
+      console.log('Fabric CA server port is reachable.');
     } catch (e) {
       console.warn(`[WARNING] Fabric CA server is offline. Enabling Mock CA mode.`);
       useMock = true;
@@ -43,6 +58,7 @@ async function initCA() {
     useMock = true;
   }
 }
+
 
 /**
  * Helper to generate a realistic mock certificate
@@ -118,14 +134,17 @@ async function enrollAdmin() {
  * @param {string} userRole (e.g. officer, lab)
  * @returns {Promise<string>} Enrollment secret
  */
+
 async function registerUser(username, userRole = 'client') {
   if (!wallet) await initCA();
   await enrollAdmin();
 
+  const assignedRole = (userRole === 'lab' || username.toLowerCase().includes('lab')) ? 'lab' : 'officer';
+
   if (useMock) {
-    console.log(`CA (Mock Mode): Registering user ${username}...`);
+    console.log(`CA (Mock Mode): Registering user ${username} with role ${assignedRole}...`);
     const secret = crypto.randomBytes(6).toString('hex');
-    mockUserStore.set(username, { secret, userRole, registered: true });
+    mockUserStore.set(username, { secret, userRole: assignedRole, registered: true });
     console.log(`CA (Mock Mode): Registered ${username} with secret: ${secret}`);
     return secret;
   }
@@ -143,10 +162,13 @@ async function registerUser(username, userRole = 'client') {
     const secret = await caClient.register({
       affiliation: 'org1.department1',
       enrollmentID: username,
-      role: userRole,
+      role: 'client',
+      attrs: [
+        { name: 'evidex.role', value: assignedRole, ecert: true }
+      ]
     }, adminUser);
 
-    console.log(`Successfully registered user ${username} with CA. secret generated.`);
+    console.log(`Successfully registered user ${username} with CA (Role: ${assignedRole}). Secret generated.`);
     return secret;
   } catch (error) {
     console.error(`Failed to register user ${username}: `, error);

@@ -1,9 +1,7 @@
 import {
   hashFile,
   encryptFile,
-  decryptFile,
   uploadToIPFS,
-  registerEvidence,
   verifyEvidence,
   generateEncryptionKey,
   exportKey,
@@ -15,64 +13,64 @@ import {
 // DOM Elements Selection
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Operational Nodes (Layer 2)
+// Operational Nodes (Module 3 Timeline)
 const nodes = {
   police: document.getElementById("node-police"),
   lab: document.getElementById("node-lab"),
   court: document.getElementById("node-court")
 };
 
-// 1. Hash Elements
-const hashFileInput = document.getElementById("hash-file-input");
-const hashBtn = document.getElementById("hash-btn");
-const hashOutput = document.getElementById("hash-output");
+// Module 1: Dashboard
+const dashConnectedOrg = document.getElementById("dash-connected-org");
+const dashCaStatus = document.getElementById("dash-ca-status");
+const dashLedgerMode = document.getElementById("dash-ledger-mode");
 
-// 2. Encrypt Elements
-const encryptFileInput = document.getElementById("encrypt-file-input");
-const encryptBtn = document.getElementById("encrypt-btn");
-const encryptOutput = document.getElementById("encrypt-output");
-
-// 3. IPFS Upload Elements
-const uploadFileInput = document.getElementById("upload-file-input");
-const pinataKeyInput = document.getElementById("pinata-key-input");
-const uploadBtn = document.getElementById("upload-btn");
-const uploadOutput = document.getElementById("upload-output");
-
-// 4. Verify Elements
-const verifyIdInput = document.getElementById("verify-id-input");
-const verifyFileInput = document.getElementById("verify-file-input");
-const verifyBtn = document.getElementById("verify-btn");
-const verifyOutput = document.getElementById("verify-output");
-
-// 5. Pipeline Elements
+// Module 2: Registration
 const pipelineFileInput = document.getElementById("pipeline-file-input");
-const pipelinePinataKey = document.getElementById("pipeline-pinata-key");
 const pipelineBtn = document.getElementById("pipeline-btn");
+const pipelineFileTestBtn = document.getElementById("pipeline-file-test-btn");
+let pipelineSelectedFile = null;
 const pipelineOutput = document.getElementById("pipeline-output");
 const pipelineOfficerId = document.getElementById("pipeline-officer-id");
 const pipelineCaseId = document.getElementById("pipeline-case-id");
 const pipelineLocation = document.getElementById("pipeline-location");
+const pipelineStepsBox = document.getElementById("pipeline-steps-box");
+const stepHash = document.getElementById("step-hash");
+const stepEncrypt = document.getElementById("step-encrypt");
+const stepIpfs = document.getElementById("step-ipfs");
+const stepLedger = document.getElementById("step-ledger");
 
-// 6. Offline Demo Elements
-const demoFileInput = document.getElementById("demo-file-input");
-const demoRegisterBtn = document.getElementById("demo-register-btn");
-const demoVerifyMatchBtn = document.getElementById("demo-verify-match-btn");
-const demoVerifyTamperBtn = document.getElementById("demo-verify-tamper-btn");
-const demoOutput = document.getElementById("demo-output");
+// Module 3: Handoff Execution Panel
+const sectionHandoffAction = document.getElementById("section-handoff-action");
+const handoffEvidenceId = document.getElementById("handoff-evidence-id");
+const handoffFromOrg = document.getElementById("handoff-from-org");
+const handoffToOrg = document.getElementById("handoff-to-org");
+const handoffReason = document.getElementById("handoff-reason");
+const handoffSubmitBtn = document.getElementById("handoff-submit-btn");
+const handoffOutput = document.getElementById("handoff-output");
 
-// 7. Centerpiece 3D block
+// Module 4: Verification
+const verifyIdInput = document.getElementById("verify-id-input");
+const verifyFileInput = document.getElementById("verify-file-input");
+const verifyBtn = document.getElementById("verify-btn");
+const verifyOutput = document.getElementById("verify-output");
+const verifyFileTestBtn = document.getElementById("verify-file-test-btn");
+let verifySelectedFile = null;
+
+// Module 5: History Log
+const historyTimelineBox = document.getElementById("history-timeline-box");
+
+// Module 6: Certificate Viewer
+const certificatePrintArea = document.getElementById("certificate-print-area");
+const printCertBtn = document.getElementById("print-cert-btn");
+
+// Centerpiece 3D block
 const coreCubeElement = document.getElementById("evidentiary-core-cube");
+const coreStatusText = document.getElementById("core-status-text");
 
-// Offline State store simulating the blockchain
-let demoState = {
-  storedHash: null,
-  fileName: null,
-  encryptedSize: null,
-  keyB64: null,
-  officerID: "OFF-DEMO",
-  caseID: "FIR-2026-DEMO",
-  location: "Integrated Cyber Forensic Cell, TN"
-};
+// Global Active State
+let activeEvidenceId = null;
+let activeCustodian = "PoliceDept";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // UI Utility Helper Functions
@@ -81,7 +79,6 @@ let demoState = {
 function showOutput(el, html) {
   el.innerHTML = html;
   el.classList.add("visible");
-  // Scroll card into viewport alignment smoothly
   el.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
@@ -120,50 +117,73 @@ function setActiveNode(nodeKey) {
     const workspaceContainer = nodeElement.closest('.antigravity-workspace-envelope') || document.body;
     const containerRect = workspaceContainer.getBoundingClientRect();
 
-    // Compute precise horizontal anchor coordinates relative to the layout frame
     const targetX = (nodeRect.left + (nodeRect.width / 2)) - containerRect.left;
-    
-    // Center the 450px wide volumetric asset container over the active target coordinates
     const calculatedOffset = targetX - 225;
 
-    // Execute high-inertia linear translation slide across the viewport coordinates
     beamAxis.style.transform = `translateX(${calculatedOffset}px)`;
-    
-    // Update CSS system root variable to smoothly bend the background radial light profile
     document.documentElement.style.setProperty('--active-node-x', `${(targetX / containerRect.width) * 100}%`);
-    
-    // Share with particle engine to concentrate the data packets dynamically
     window.activeNodeX = targetX;
   }
 }
 window.setActiveNode = setActiveNode;
 
+// Fetch system health to configure dashboard
+async function fetchSystemHealth() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/health`);
+    if (res.ok) {
+      const status = await res.json();
+      const isMockLedger = status.mode.ledger === "mock-fallback";
+      
+      dashLedgerMode.textContent = isMockLedger ? "● MOCK FALLBACK" : "● LIVE BLOCKCHAIN";
+      dashLedgerMode.style.color = isMockLedger ? "var(--glow-amber)" : "var(--neon-green)";
+      dashLedgerMode.style.textShadow = isMockLedger ? "0 0 10px rgba(255,184,0,0.3)" : "0 0 10px rgba(0,255,140,0.3)";
+      
+      dashCaStatus.textContent = status.mode.ca === "production" ? "● ONLINE" : "● MOCK FALLBACK";
+      dashCaStatus.style.color = status.mode.ca === "production" ? "var(--neon-green)" : "var(--glow-amber)";
+    }
+  } catch (err) {
+    dashLedgerMode.textContent = "● DISCONNECTED";
+    dashLedgerMode.style.color = "var(--glow-crimson)";
+    dashLedgerMode.style.textShadow = "0 0 10px rgba(255,42,95,0.3)";
+    dashCaStatus.textContent = "● OFFLINE";
+    dashCaStatus.style.color = "var(--glow-crimson)";
+  }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Event Bindings & Action Orchestrations
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Initialise active node to Police on launch
 window.addEventListener("DOMContentLoaded", () => {
-  // Brief timeout to ensure layout calculations have stabilized
-  setTimeout(() => setActiveNode("police"), 150);
-  
-  // Let clicking nodes scroll to their interactive widgets
+  setTimeout(() => {
+    setActiveNode("police");
+    fetchSystemHealth();
+  }, 150);
+
+  // Link Timeline nodes to information lookup/focus
   if (nodes.police) {
     nodes.police.addEventListener("click", () => {
       setActiveNode("police");
-      document.getElementById("section-pipeline").scrollIntoView({ behavior: "smooth" });
+      if (activeCustodian === "PoliceDept" && activeEvidenceId) {
+        openHandoffPanel("PoliceDept");
+      }
     });
   }
   if (nodes.lab) {
     nodes.lab.addEventListener("click", () => {
       setActiveNode("lab");
-      document.getElementById("section-verify").scrollIntoView({ behavior: "smooth" });
+      if (activeCustodian === "ForensicLab" && activeEvidenceId) {
+        openHandoffPanel("ForensicLab");
+      }
     });
   }
   if (nodes.court) {
     nodes.court.addEventListener("click", () => {
       setActiveNode("court");
-      document.getElementById("section-offline-demo").scrollIntoView({ behavior: "smooth" });
+      if (activeCustodian === "JudicialCourt" && activeEvidenceId) {
+        openHandoffPanel("JudicialCourt");
+      }
     });
   }
 });
@@ -176,130 +196,305 @@ window.addEventListener("resize", () => {
   }
 });
 
-// 1. SHA-256 Hashing Form Control
-hashFileInput.addEventListener("change", () => {
-  hashBtn.disabled = !hashFileInput.files.length;
-});
-
-hashBtn.addEventListener("click", async () => {
-  setActiveNode("lab");
-  setLoading(hashBtn, true);
-  try {
-    const file = hashFileInput.files[0];
-    const t0 = performance.now();
-    const hash = await hashFile(file);
-    const elapsed = (performance.now() - t0).toFixed(1);
-    updateCubeHash(hash);
-    
-    showOutput(hashOutput, [
-      `[ CRYPTOGRAPHIC DATA INTEGRITY REPORT ]`,
-      `<span class="hud-hash-label">FILE NAME:</span>   ${file.name}`,
-      `<span class="hud-hash-label">SIZE:</span>        ${(file.size / 1024).toFixed(2)} KB`,
-      `<span class="hud-hash-label">ALGORITHM:</span>   SHA-256 Digest`,
-      `<span class="hud-hash-label">FINGERPRINT:</span> <span class="hud-hash-value">${hash}</span>`,
-      `<span class="hud-hash-label">COMP TIME:</span>   ${elapsed} ms`,
-      `\n✅ DIGITAL SHA-256 VERIFIED CHECKSUM READY.`
-    ].join("\n"));
-  } catch (err) {
-    showOutput(hashOutput, `❌ Error: ${err.message}`);
+// Enable/Disable Register Button
+pipelineFileInput.addEventListener("change", () => {
+  pipelineSelectedFile = pipelineFileInput.files[0];
+  pipelineBtn.disabled = !pipelineSelectedFile;
+  if (pipelineSelectedFile && pipelineFileTestBtn) {
+    pipelineFileTestBtn.textContent = "Use Test File";
   }
-  setLoading(hashBtn, false);
 });
 
-// 2. AES-256-GCM Encryption Form Control
-encryptFileInput.addEventListener("change", () => {
-  encryptBtn.disabled = !encryptFileInput.files.length;
-});
+if (pipelineFileTestBtn) {
+  pipelineFileTestBtn.addEventListener("click", () => {
+    const dummyText = "Forensic evidence data - Case FIR-2026-0092";
+    pipelineSelectedFile = new File([dummyText], "crime_log.txt", { type: "text/plain" });
+    pipelineBtn.disabled = false;
+    pipelineFileTestBtn.textContent = "✓ Test File Loaded";
+  });
+}
 
-encryptBtn.addEventListener("click", async () => {
-  setActiveNode("lab");
-  setLoading(encryptBtn, true);
-  try {
-    const file = encryptFileInput.files[0];
-    const key = await generateEncryptionKey();
-    const t0 = performance.now();
-    const encrypted = await encryptFile(file, key);
-    const elapsed = (performance.now() - t0).toFixed(1);
-    const keyB64 = await exportKey(key);
-    updateCubeHash(keyB64);
-
-    // Offer immediate download of the secure cipher block
-    const blob = new Blob([encrypted], { type: "application/octet-stream" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = file.name + ".encrypted.bin";
-    a.click();
-    URL.revokeObjectURL(url);
-
-    showOutput(encryptOutput, [
-      `[ CONFIDENTIALITY VAULT ENCRYPTION REPORT ]`,
-      `<span class="hud-hash-label">PLAINTEXT:</span>   ${file.name}`,
-      `<span class="hud-hash-label">PLAIN SIZE:</span>  ${(file.size / 1024).toFixed(2)} KB`,
-      `<span class="hud-hash-label">CIPHER SIZE:</span> ${(encrypted.byteLength / 1024).toFixed(2)} KB`,
-      `<span class="hud-hash-label">CIPHER MODE:</span>  AES-256-GCM (Authenticated + 12-byte IV Prepended)`,
-      `<span class="hud-hash-label">KEY EXPORT:</span>   <span class="hud-hash-value">${keyB64}</span>`,
-      `<span class="hud-hash-label">COMP TIME:</span>   ${elapsed} ms`,
-      `\n✅ CIPHER BLOCK SENT TO DOWNLOADS AS [${file.name}.encrypted.bin].`,
-      `⚠️  DO NOT LOSE THE KEY EXPORT STRING. RECOVERY IS IMPOSSIBLE.`
-    ].join("\n"));
-  } catch (err) {
-    showOutput(encryptOutput, `❌ Error: ${err.message}`);
-  }
-  setLoading(encryptBtn, false);
-});
-
-// 3. Upload to IPFS Form Control
-const checkUploadReady = () => {
-  uploadBtn.disabled = !(uploadFileInput.files.length && pinataKeyInput.value.trim());
-};
-uploadFileInput.addEventListener("change", checkUploadReady);
-pinataKeyInput.addEventListener("input", checkUploadReady);
-
-uploadBtn.addEventListener("click", async () => {
+// 2. Complete End-to-End Registration Pipeline
+pipelineBtn.addEventListener("click", async () => {
   setActiveNode("police");
-  setLoading(uploadBtn, true);
+  setLoading(pipelineBtn, true);
+  pipelineStepsBox.style.display = "block";
+  
+  // Reset steps
+  stepHash.style.color = "var(--glow-amber)";
+  stepHash.textContent = "⚙️ Computing digital SHA-256 fingerprint...";
+  stepEncrypt.style.color = "var(--text-muted)";
+  stepEncrypt.textContent = "○ Uploading file payload to secure backend...";
+  stepIpfs.style.color = "var(--text-muted)";
+  stepIpfs.textContent = "○ Server pinning to decentralized IPFS...";
+  stepLedger.style.color = "var(--text-muted)";
+  stepLedger.textContent = "○ Securing transaction blocks on Hyperledger Fabric...";
+
   try {
-    const file = uploadFileInput.files[0];
-    const apiKey = pinataKeyInput.value.trim();
-    const t0 = performance.now();
-    const cid = await uploadToIPFS(file, apiKey, file.name);
-    const elapsed = (performance.now() - t0).toFixed(1);
+    const file = pipelineSelectedFile || pipelineFileInput.files[0];
+    const officerId = pipelineOfficerId.value.trim() || "Officer_Smith";
+    const caseId = pipelineCaseId.value.trim() || "FIR-AUTO";
     
-    showOutput(uploadOutput, [
-      `[ DECENTRALIZED DATA PIN REPORT ]`,
-      `<span class="hud-hash-label">TARGET BIN:</span>   ${file.name}`,
-      `<span class="hud-hash-label">IPFS CID:</span>     <span class="hud-hash-value">${cid}</span>`,
-      `<span class="hud-hash-label">RESOLVE URI:</span>   https://gateway.pinata.cloud/ipfs/${cid}`,
-      `<span class="hud-hash-label">PING TIME:</span>    ${elapsed} ms`,
-      `\n✅ PAYLOAD DISTRIBUTED & PINNED TO PEER-TO-PEER IPFS NETWORK.`
+    // Step 1: Hash file client-side for integrity display
+    const hash = await hashFile(file);
+    stepHash.style.color = "var(--neon-green)";
+    stepHash.textContent = "✓ Digital SHA-256 Fingerprint Computed.";
+    
+    // Step 2: Authenticate and enroll if wallet credentials missing
+    stepEncrypt.style.color = "var(--glow-amber)";
+    stepEncrypt.textContent = "⚙️ Enrolling officer identity and transferring file payload...";
+    await ensureOfficerWallet(officerId);
+    
+    // Build multipart form data
+    const formData = new FormData();
+    formData.append("evidenceId", "EVD-" + Date.now().toString().slice(-4));
+    formData.append("caseId", caseId);
+    formData.append("officerId", officerId);
+    formData.append("file", file);
+
+    // Step 3: Send file payload to backend
+    stepEncrypt.style.color = "var(--neon-green)";
+    stepEncrypt.textContent = "✓ File payload successfully transferred to backend.";
+    stepIpfs.style.color = "var(--glow-amber)";
+    stepIpfs.textContent = "⚙️ Uploading file to decentralized IPFS node...";
+
+    const regResponse = await fetch(`${API_BASE_URL}/evidence/register`, {
+      method: "POST",
+      headers: { 
+        "x-officer-id": officerId
+      },
+      body: formData
+    });
+
+    if (!regResponse.ok) {
+      const errData = await regResponse.json();
+      throw new Error(errData.error || "Registry rejected by blockchain peer node");
+    }
+
+    const regData = await regResponse.json();
+    
+    stepIpfs.style.color = "var(--neon-green)";
+    stepIpfs.textContent = "✓ Pinned to IPFS. CID: " + regData.ipfsCID.slice(0, 16) + "...";
+    stepLedger.style.color = "var(--neon-green)";
+    stepLedger.textContent = "✓ Block committed successfully to Hyperledger Fabric!";
+    
+    activeEvidenceId = regData.evidenceId;
+    activeCustodian = "PoliceDept";
+    updateCubeHash(regData.sha256Hash);
+    coreStatusText.textContent = `EVIDENCE ACTIVE // ${activeEvidenceId}`;
+    if (coreCubeElement) {
+      coreCubeElement.classList.add("verified");
+    }
+
+    showOutput(pipelineOutput, [
+      `[ BLOCKCHAIN SECURED CUSTODY RECORD ]`,
+      `<span class="hud-hash-label">EVIDENCE ID:</span>  <span class="hud-hash-value">${activeEvidenceId}</span>`,
+      `<span class="hud-hash-label">FILE NAME:</span>    ${file.name}`,
+      `<span class="hud-hash-label">SHA-256 HASH:</span>  <span class="hud-hash-value">${regData.sha256Hash}</span>`,
+      `<span class="hud-hash-label">IPFS CID:</span>     <span class="hud-hash-value">${regData.ipfsCID}</span>`,
+      `<span class="hud-hash-label">CUSTODIAN:</span>    Tamil Nadu Police Dept (Node 01)`,
+      `\n✅ CUSTODY TRANSACTION SUBMITTED. FABRIC BLOCK COMMITTED SUCCESSFULLY.`,
+      `⚙️  VERIFIED LIVE ON HYPERLEDGER FABRIC TEST-NETWORK.`
     ].join("\n"));
+
+    // Enable and show Handoff options
+    openHandoffPanel("PoliceDept");
+    fetchEvidenceHistory(activeEvidenceId);
+
   } catch (err) {
-    showOutput(uploadOutput, `❌ Upload Failed: ${err.message}`);
+    showOutput(pipelineOutput, `❌ Registration Pipeline Failed: ${err.message}`);
   }
-  setLoading(uploadBtn, false);
+  setLoading(pipelineBtn, false);
 });
 
-// 4. Verification Form Control
+// Auto-register/enroll officer if missing from wallet
+async function ensureOfficerWallet(username) {
+  try {
+    // Attempt registration
+    const regRes = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, role: "client" })
+    });
+    
+    if (regRes.ok) {
+      const regData = await regRes.json();
+      const secret = regData.enrollmentSecret;
+      
+      // Auto-enroll
+      await fetch(`${API_BASE_URL}/auth/enroll`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, secret })
+      });
+    }
+  } catch (e) {
+    console.warn("CA Setup Check completed:", e.message);
+  }
+}
+
+// Open handoff console for active custody node
+function openHandoffPanel(custodianKey) {
+  activeCustodian = custodianKey;
+  sectionHandoffAction.style.display = "block";
+  handoffEvidenceId.value = activeEvidenceId;
+  handoffFromOrg.value = custodianKey === "PoliceDept" ? "TN Police Dept (Node 01)" :
+                         custodianKey === "ForensicLab" ? "Forensic Lab (Node 02)" : "Judicial Court (Node 03)";
+  
+  // Set default recipient target
+  if (custodianKey === "PoliceDept") {
+    handoffToOrg.value = "ForensicLab";
+    setActiveNode("police");
+  } else if (custodianKey === "ForensicLab") {
+    handoffToOrg.value = "JudicialCourt";
+    setActiveNode("lab");
+  } else {
+    handoffToOrg.value = "PoliceDept";
+    setActiveNode("court");
+  }
+
+  handoffOutput.classList.remove("visible");
+  sectionHandoffAction.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+// Module 3 Handoff Submit
+handoffSubmitBtn.addEventListener("click", async () => {
+  if (!activeEvidenceId) return;
+  setLoading(handoffSubmitBtn, true);
+
+  const officerId = pipelineOfficerId.value.trim() || "Officer_Smith";
+  const toOrg = handoffToOrg.value;
+  const reason = handoffReason.value.trim() || "Standard custody handover";
+  const fromOrgValue = activeCustodian;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/evidence/transfer`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "x-officer-id": officerId
+      },
+      body: JSON.stringify({
+        evidenceId: activeEvidenceId,
+        fromOrg: fromOrgValue,
+        toOrg,
+        reason,
+        timestamp: String(Math.floor(Date.now() / 1000))
+      })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Custody transfer transaction failed");
+    }
+
+    // Trigger visual wormhole projectile animation
+    if (window.fireWormhole) {
+      window.fireWormhole(fromOrgValue, toOrg);
+    }
+
+    activeCustodian = toOrg;
+    
+    showOutput(handoffOutput, [
+      `[ CUSTODY MUTATION BROADCASTED ]`,
+      `✅ TRANSFER COMPLETED SUCCESSFULLY.`,
+      `• EVIDENCE ID:   ${activeEvidenceId}`,
+      `• DESTINATION:   ${toOrg === "ForensicLab" ? "Forensic Lab (Node 02)" : toOrg === "JudicialCourt" ? "Judicial Court (Node 03)" : "TN Police Dept (Node 01)"}`,
+      `• LOG REASON:    "${reason}"`
+    ].join("\n"));
+
+    // Recalibrate node states
+    setTimeout(() => {
+      const targetNodeKey = toOrg === "ForensicLab" ? "lab" : toOrg === "JudicialCourt" ? "court" : "police";
+      setActiveNode(targetNodeKey);
+      openHandoffPanel(toOrg);
+      fetchEvidenceHistory(activeEvidenceId);
+    }, 1500);
+
+  } catch (err) {
+    showOutput(handoffOutput, `❌ Custody Transfer Aborted: ${err.message}`);
+  }
+  setLoading(handoffSubmitBtn, false);
+});
+
+// Fetch History Log (Module 5)
+async function fetchEvidenceHistory(evidenceId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/evidence/history/${evidenceId}`);
+    if (!res.ok) throw new Error("History fetch failed");
+    const data = await res.json();
+    
+    if (data.history && data.history.length > 0) {
+      let timelineHTML = "";
+      
+      // Render timeline cards in chronological order
+      data.history.forEach((step, index) => {
+        const val = step.value;
+        const orgText = val.toOrg ? `${val.fromOrg} ➔ ${val.toOrg}` : "Original Registration";
+        const reasonText = val.reason ? `Reason: "${val.reason}"` : `Seized by ${val.officerId} at ${val.timestamp}`;
+        
+        timelineHTML += `
+          <div class="timeline-item" style="position: relative; margin-bottom: 20px; padding-left: 20px; border-left: 2px solid var(--glow-cyan);">
+            <div style="position: absolute; left: -6px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--glow-cyan); box-shadow: 0 0 8px var(--glow-cyan);"></div>
+            <div style="color: var(--text-pure); font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">[TX #${index + 1}] ${orgText}</div>
+            <div style="color: var(--text-secondary); font-size: 0.7rem; margin-top: 3px;">${reasonText}</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem; margin-top: 2px; font-family: var(--font-mono); word-break: break-all;">TXID: ${step.txId}</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Time: ${new Date(step.timestamp).toLocaleString()}</div>
+          </div>
+        `;
+      });
+      historyTimelineBox.innerHTML = timelineHTML;
+    } else {
+      historyTimelineBox.innerHTML = `<div style="color: var(--text-muted); text-align: center; padding: 40px 0;">No logs committed for ID ${evidenceId}.</div>`;
+    }
+  } catch (err) {
+    historyTimelineBox.innerHTML = `<div style="color: var(--glow-crimson); text-align: center; padding: 40px 0;">Failed to pull ledger records: ${err.message}</div>`;
+  }
+}
+
+// 4. Verification Console (Module 4)
 const checkVerifyReady = () => {
-  verifyBtn.disabled = !(verifyIdInput.value.trim() && verifyFileInput.files.length);
+  const fileSelected = verifySelectedFile || verifyFileInput.files.length > 0;
+  verifyBtn.disabled = !(verifyIdInput.value.trim() && fileSelected);
 };
 verifyIdInput.addEventListener("input", checkVerifyReady);
-verifyFileInput.addEventListener("change", checkVerifyReady);
+verifyFileInput.addEventListener("change", () => {
+  verifySelectedFile = verifyFileInput.files[0];
+  if (verifySelectedFile && verifyFileTestBtn) {
+    verifyFileTestBtn.textContent = "Use Test File";
+  }
+  checkVerifyReady();
+});
+
+if (verifyFileTestBtn) {
+  verifyFileTestBtn.addEventListener("click", () => {
+    const dummyText = "Forensic evidence data - Case FIR-2026-0092";
+    verifySelectedFile = new File([dummyText], "crime_log.txt", { type: "text/plain" });
+    verifyFileTestBtn.textContent = "✓ Test File Loaded";
+    checkVerifyReady();
+  });
+}
 
 verifyBtn.addEventListener("click", async () => {
-  setActiveNode("lab");
   setLoading(verifyBtn, true);
   try {
     const id = verifyIdInput.value.trim();
-    const file = verifyFileInput.files[0];
+    const file = verifySelectedFile || verifyFileInput.files[0];
     const verdict = await verifyEvidence(id, file);
-    updateCubeHash(verdict.currentHash);
     
     const isMatch = verdict.status === "MATCH";
+    
+    // Set Active State
+    activeEvidenceId = id;
+    
+    // Update Cube Color and status text
+    updateCubeHash(verdict.currentHash);
+    coreStatusText.textContent = isMatch ? "INTEGRITY AUTHENTICATED" : "SECURITY COMPROMISED";
+    
     if (coreCubeElement) {
       coreCubeElement.classList.add(isMatch ? "verified" : "tampered");
     }
+
     const statusClass = isMatch ? "hud-verdict--match" : "hud-verdict--tampered";
     const statusIcon = isMatch ? "🛡️ INTEGRITY CONFIRMED" : "🚨 SECURITY COMPROMISED (TAMPERED)";
     const hashValClass = isMatch ? "hud-hash-value--match" : "hud-hash-value--tampered";
@@ -309,195 +504,61 @@ verifyBtn.addEventListener("click", async () => {
       `<div class="hud-hash-line"><span class="hud-hash-label">EVIDENCE ID:</span>  ${verdict.evidenceId}</div>`,
       `<div class="hud-hash-line"><span class="hud-hash-label">CHAIN RECORD:</span> <span class="${hashValClass}">${verdict.storedHash}</span></div>`,
       `<div class="hud-hash-line"><span class="hud-hash-label">FILE HASH:</span>    <span class="${hashValClass}">${verdict.currentHash}</span></div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">TIMESTAMP:</span>    ${verdict.verifiedAt}</div>`
+      `<div class="hud-hash-line"><span class="hud-hash-label">VERIFIED AT:</span>    ${new Date(verdict.verifiedAt).toLocaleString()}</div>`
     ].join("");
     
-    if (isMatch) {
-      setActiveNode("court");
-      htmlResult += renderBsaCertificate(verdict.evidenceId, verdict.storedHash, "N/A", "OFF-API", "API-CASE", "API-ENDPOINT");
-    }
-    
     showOutput(verifyOutput, htmlResult);
+    
+    // Fetch and load timeline logs
+    fetchEvidenceHistory(id);
+
+    // If matches, populate Certificate Viewer
+    if (isMatch) {
+      // Fetch details to build certificate
+      try {
+        const historyRes = await fetch(`${API_BASE_URL}/evidence/history/${id}`);
+        const historyData = await historyRes.json();
+        const initialRegistration = historyData.history[0]?.value || {};
+        
+        loadBsaCertificate(
+          id, 
+          verdict.storedHash, 
+          initialRegistration.ipfsCID || "N/A", 
+          initialRegistration.officerId || "Officer_Unknown", 
+          initialRegistration.caseId || "N/A", 
+          initialRegistration.location || "N/A"
+        );
+      } catch (e) {
+        // Fallback layout
+        loadBsaCertificate(id, verdict.storedHash, "N/A", "Officer_Smith", "CASE-FILE", "Seizure Site");
+      }
+      
+      // Determine active custodian
+      try {
+        const historyRes = await fetch(`${API_BASE_URL}/evidence/history/${id}`);
+        const historyData = await historyRes.json();
+        const lastTx = historyData.history[historyData.history.length - 1]?.value || {};
+        const currentCustodianOrg = lastTx.toOrg || "PoliceDept";
+        openHandoffPanel(currentCustodianOrg);
+      } catch(e) {}
+    } else {
+      // Clear Certificate Viewer
+      certificatePrintArea.innerHTML = `<div style="color: var(--glow-crimson); text-align: center; padding: 40px 0;">Admissibility Certificate Voided. Integrity verification failed (tampered file).</div>`;
+      printCertBtn.disabled = true;
+    }
   } catch (err) {
     showOutput(verifyOutput, `❌ Verification Request Refused: ${err.message}`);
   }
   setLoading(verifyBtn, false);
 });
 
-// 5. Complete End-to-End Submission Pipeline
-const checkPipelineReady = () => {
-  pipelineBtn.disabled = !(pipelineFileInput.files.length && pipelinePinataKey.value.trim());
-};
-pipelineFileInput.addEventListener("change", checkPipelineReady);
-pipelinePinataKey.addEventListener("input", checkPipelineReady);
-
-pipelineBtn.addEventListener("click", async () => {
-  setActiveNode("police");
-  setLoading(pipelineBtn, true);
-  try {
-    const file = pipelineFileInput.files[0];
-    const options = {
-      pinataApiKey: pipelinePinataKey.value.trim(),
-      officerID: pipelineOfficerId.value.trim() || "OFF-AUTO",
-      caseID: pipelineCaseId.value.trim() || "FIR-AUTO",
-      location: pipelineLocation.value.trim() || "Seizure Scene"
-    };
-    
-    const res = await processEvidence(file, options);
-    updateCubeHash(res.hash);
-    
-    showOutput(pipelineOutput, [
-      `[ BLOCKCHAIN SECURED CUSTODY RECORD ]`,
-      `<span class="hud-hash-label">FILE:</span>          ${res.fileName}`,
-      `<span class="hud-hash-label">SHA-256 HASH:</span>  <span class="hud-hash-value">${res.hash}</span>`,
-      `<span class="hud-hash-label">IPFS CID:</span>     <span class="hud-hash-value">${res.cid}</span>`,
-      `<span class="hud-hash-label">AES-256 KEY:</span>  <span class="hud-hash-value">${res.encryptionKey}</span>`,
-      `<span class="hud-hash-label">TIMESTAMP:</span>    ${res.processedAt}`,
-      `\n✅ CUSTODY TRANSACTION SUBMITTED. FABRIC BLOCK FORGED SUCCESSFULLY.`,
-      `⚠️  KEY EXPORT DOWNLOADED LOCALLY. RECORD TRANSACTION CODES.`
-    ].join("\n"));
-  } catch (err) {
-    showOutput(pipelineOutput, `❌ Handoff Continuum Pipeline Halted: ${err.message}`);
-  }
-  setLoading(pipelineBtn, false);
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 6. Offline Interactive Simulation Module (No Backend Required)
-// ─────────────────────────────────────────────────────────────────────────────
-
-demoFileInput.addEventListener("change", () => {
-  demoRegisterBtn.disabled = !demoFileInput.files.length;
-  demoVerifyMatchBtn.disabled = true;
-  demoVerifyTamperBtn.disabled = true;
-  // Reset simulation state
-  demoState = {
-    storedHash: null,
-    fileName: null,
-    encryptedSize: null,
-    keyB64: null,
-    officerID: document.getElementById("pipeline-officer-id").value.trim() || "OFF-5829",
-    caseID: document.getElementById("pipeline-case-id").value.trim() || "FIR-2026-8801",
-    location: document.getElementById("pipeline-location").value.trim() || "Integrated Cyber Forensic Cell, TN"
-  };
-  demoOutput.classList.remove("visible");
-});
-
-demoRegisterBtn.addEventListener("click", async () => {
-  setActiveNode("police");
-  setLoading(demoRegisterBtn, true);
-  try {
-    const file = demoFileInput.files[0];
-    const hash = await hashFile(file);
-    const key = await generateEncryptionKey();
-    updateCubeHash(hash);
-    const encrypted = await encryptFile(file, key);
-    const keyB64 = await exportKey(key);
-    
-    // Seed locally simulated ledger state
-    demoState.storedHash = hash;
-    demoState.fileName = file.name;
-    demoState.encryptedSize = encrypted.byteLength;
-    demoState.keyB64 = keyB64;
-    
-    demoVerifyMatchBtn.disabled = false;
-    demoVerifyTamperBtn.disabled = false;
-    
-    showOutput(demoOutput, [
-      `[ SIMULATED LEDGER ENTRY COMMITTED ]`,
-      `<span class="hud-hash-label">EVIDENCE NAME:</span>  ${file.name}`,
-      `<span class="hud-hash-label">SHA-256 HASH:</span>   <span class="hud-hash-value">${hash}</span>`,
-      `<span class="hud-hash-label">AES CIPHER:</span>     ${(encrypted.byteLength / 1024).toFixed(2)} KB Blob`,
-      `<span class="hud-hash-label">DECRYPT KEY:</span>    <span class="hud-hash-value">${keyB64}</span>`,
-      `<span class="hud-hash-label">LEDGER STATE:</span>   REGISTERED (Hyperledger Simulation)`,
-      `\n✅ CUSTODY STAGE 1: TN POLICE SUBMITTED ELECTRONIC EVIDENCE REGISTRY.`,
-      `👉 Now select '② Verify Same File (MATCH)' or '③ Simulate Tamper (TAMPERED)'.`
-    ].join("\n"));
-  } catch (err) {
-    showOutput(demoOutput, `❌ Offline Registration Fault: ${err.message}`);
-  }
-  setLoading(demoRegisterBtn, false);
-});
-
-demoVerifyMatchBtn.addEventListener("click", async () => {
-  setActiveNode("lab");
-  setLoading(demoVerifyMatchBtn, true);
-  try {
-    const file = demoFileInput.files[0];
-    const hash = await hashFile(file);
-    const isMatch = hash === demoState.storedHash;
-    updateCubeHash(hash);
-    
-    if (coreCubeElement && isMatch) {
-      coreCubeElement.classList.add("verified");
-    }
-    
-    setActiveNode("court");
-    
-    const verdictHTML = [
-      `<div class="hud-verdict hud-verdict--match">🛡️ INTEGRITY AUTHENTICATED</div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">BLOCKCHAIN HASH:</span> <span class="hud-hash-value--match">${demoState.storedHash}</span></div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">SUBMITTED HASH:</span>  <span class="hud-hash-value--match">${hash}</span></div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">STATUS VERDICT:</span>  MATCH (No Tampering Detected)</div>`,
-      `\n✅ CUSTODY STAGE 2: FORENSIC LAB VERIFIED INTEGRITY. CONSENSUS CONGRUENT.`,
-      renderBsaCertificate("EVD-SIM-9921", demoState.storedHash, "QmXySimulatedIPFSHashCourtroomAdmissible", demoState.officerID, demoState.caseID, demoState.location)
-    ].join("");
-    
-    showOutput(demoOutput, verdictHTML);
-  } catch (err) {
-    showOutput(demoOutput, `❌ Offline Verify Fault: ${err.message}`);
-  }
-  setLoading(demoVerifyMatchBtn, false);
-});
-
-demoVerifyTamperBtn.addEventListener("click", async () => {
-  setActiveNode("lab");
-  setLoading(demoVerifyTamperBtn, true);
-  try {
-    const file = demoFileInput.files[0];
-    const originalBytes = await file.arrayBuffer();
-    
-    // Inject exactly 1 bit change (avalance demonstration) by appending 0xFF at the end of stream
-    const tamperedBytes = new Uint8Array(originalBytes.byteLength + 1);
-    tamperedBytes.set(new Uint8Array(originalBytes));
-    tamperedBytes[originalBytes.byteLength] = 0xFF;
-    
-    const tamperedBlob = new Blob([tamperedBytes], { type: file.type });
-    const tamperedHash = await hashFile(tamperedBlob);
-    updateCubeHash(tamperedHash);
-    
-    if (coreCubeElement) {
-      coreCubeElement.classList.add("tampered");
-    }
-    
-    // Triggers visual warning shakes in CSS
-    const verdictHTML = [
-      `<div class="hud-verdict hud-verdict--tampered">🚨 CRITICAL AUDIT ALERT: EVIDENCE TAMPERED</div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">LEDGER HASH:</span>    <span class="hud-hash-value--match">${demoState.storedHash}</span></div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">CURRENT HASH:</span>   <span class="hud-hash-value--tampered">${tamperedHash}</span></div>`,
-      `<div class="hud-hash-line"><span class="hud-hash-label">INTEGRITY STATE:</span> TAMPERED (AVALANCHE EFFECT ENGAGED)</div>`,
-      `\n❌ CUSTODY REPORT: HASH COMPARISON FAILED.`,
-      `   A single extra byte was injected, generating a completely divergent`,
-      `   cryptographic signature. Admissibility to court under BSA §63 is VOIDED.`
-    ].join("");
-    
-    showOutput(demoOutput, verdictHTML);
-  } catch (err) {
-    showOutput(demoOutput, `❌ Offline Tamper Simulation Fault: ${err.message}`);
-  }
-  setLoading(demoVerifyTamperBtn, false);
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Admissibility Certificate Generator (BSA 2023 §63 Compliant)
-// ─────────────────────────────────────────────────────────────────────────────
-
-function renderBsaCertificate(evidenceId, hash, ipfsCid, officerId, caseId, location) {
+// Module 6: Load Admissibility Certificate (BSA 2023 §63 Compliant)
+function loadBsaCertificate(evidenceId, hash, ipfsCid, officerId, caseId, location) {
   const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) + " (IST)";
   const secureSign = "SIG-SHA256-" + hash.slice(0, 16).toUpperCase();
   
-  return `
-    <div class="bsa-certificate">
+  certificatePrintArea.innerHTML = `
+    <div class="bsa-certificate" id="printable-certificate-card">
       <div class="bsa-certificate__hdr">
         <div class="bsa-certificate__title">CERTIFICATE OF ELECTRONIC EVIDENCE</div>
         <div class="bsa-certificate__sub">Under Section 63 of Bharatiya Sakshya Adhiniyam, 2023</div>
@@ -520,22 +581,23 @@ function renderBsaCertificate(evidenceId, hash, ipfsCid, officerId, caseId, loca
       </div>
       <div class="bsa-certificate__row">
         <div class="bsa-certificate__lbl">SECURED HASH:</div>
-        <div class="bsa-certificate__val">${hash}</div>
+        <div class="bsa-certificate__val" style="font-size: 0.68rem; color: var(--neon-green);">${hash}</div>
       </div>
       <div class="bsa-certificate__row">
         <div class="bsa-certificate__lbl">IPFS CID:</div>
-        <div class="bsa-certificate__val">${ipfsCid}</div>
+        <div class="bsa-certificate__val" style="font-size: 0.68rem;">${ipfsCid}</div>
       </div>
       <div class="bsa-certificate__row">
         <div class="bsa-certificate__lbl">VERIFIED AT:</div>
         <div class="bsa-certificate__val">${timestamp}</div>
       </div>
-      <div class="bsa-certificate__seal">
+      <div class="bsa-certificate__seal" style="margin-top: 15px; border-top: 1px dashed rgba(0, 255, 140, 0.2); padding-top: 10px; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--neon-green);">
         <span>STATUS: SYSTEM ADMISSIBLE</span>
         <span>${secureSign}</span>
       </div>
     </div>
   `;
+  printCertBtn.disabled = false;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -641,3 +703,75 @@ function flashRealtimeAlert(message, type = 'info') {
   }, 5000);
 }
 
+// Print Handler
+printCertBtn.addEventListener("click", () => {
+  const printableArea = document.getElementById("printable-certificate-card");
+  if (!printableArea) return;
+  
+  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>BSA Section 63 Evidence Certificate</title>
+        <style>
+          body {
+            font-family: monospace;
+            padding: 40px;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+          }
+          .bsa-certificate {
+            border: 2px solid #000000;
+            padding: 30px;
+            border-radius: 4px;
+          }
+          .bsa-certificate__hdr {
+            text-align: center;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+          }
+          .bsa-certificate__title {
+            font-size: 18px;
+            font-weight: bold;
+          }
+          .bsa-certificate__sub {
+            font-size: 12px;
+            margin-top: 5px;
+          }
+          .bsa-certificate__row {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 14px;
+          }
+          .bsa-certificate__lbl {
+            width: 220px;
+            font-weight: bold;
+          }
+          .bsa-certificate__val {
+            word-break: break-all;
+          }
+          .bsa-certificate__seal {
+            margin-top: 30px;
+            border-top: 2px dashed #000000;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+          }
+          @media print {
+            body { padding: 0; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="no-print" style="margin-bottom: 20px; text-align: right;">
+          <button onclick="window.print();window.close();" style="padding: 8px 16px; font-weight: bold; cursor: pointer;">Print Document</button>
+        </div>
+        ${printableArea.outerHTML}
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+});
