@@ -79,11 +79,27 @@
     <!-- Centerpiece 3D Crystal Core (Integrity Status Visualizer) -->
     <div class="gyro-vault-sphere" id="gyro-vault-container">
       
-      <!-- Vector Ring 01: Core Status Orbit (Single Ring) -->
-      <div class="gyro-ring gyro-ring--middle" style="width: 280px; height: 280px; border-color: rgba(0, 240, 255, 0.15);">
-        <div class="gyro-telemetry font-monospace" id="core-status-text" style="color: var(--glow-cyan);">INTEGRITY CORE // SECURE</div>
+      <!-- Vector Ring 01: Outer Ring (Cryptographic Hash) -->
+      <div class="gyro-ring gyro-ring--outer">
+        <div class="gyro-telemetry font-monospace">HASH // SHA-256</div>
         <svg viewBox="0 0 100 100" class="gyro-svg">
-          <circle cx="50" cy="50" r="47" class="gyro-circle" style="stroke: var(--cyber-cyan);" />
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+        </svg>
+      </div>
+
+      <!-- Vector Ring 02: Middle Ring (AES-256 Encryption) -->
+      <div class="gyro-ring gyro-ring--middle">
+        <div class="gyro-telemetry font-monospace" id="core-status-text">INTEGRITY CORE // SECURE</div>
+        <svg viewBox="0 0 100 100" class="gyro-svg">
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
+        </svg>
+      </div>
+
+      <!-- Vector Ring 03: Inner Ring (IPFS Storage) -->
+      <div class="gyro-ring gyro-ring--inner">
+        <div class="gyro-telemetry font-monospace">LEDGER // Fabric</div>
+        <svg viewBox="0 0 100 100" class="gyro-svg">
+          <circle cx="50" cy="50" r="47" class="gyro-circle" />
         </svg>
       </div>
 
