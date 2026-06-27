@@ -302,7 +302,7 @@ pipelineBtn.addEventListener("click", async () => {
     ].join("\n"));
 
     // Enable and show Handoff options
-    openHandoffPanel("PoliceDept");
+    openHandoffPanel("PoliceDept", true);
     fetchEvidenceHistory(activeEvidenceId);
 
   } catch (err) {
@@ -328,7 +328,7 @@ async function ensureOfficerWallet(username) {
 }
 
 // Open handoff console for active custody node
-function openHandoffPanel(custodianKey) {
+function openHandoffPanel(custodianKey, clearOutput = false) {
   activeCustodian = custodianKey;
   sectionHandoffAction.style.display = "block";
   handoffEvidenceId.value = activeEvidenceId;
@@ -347,7 +347,9 @@ function openHandoffPanel(custodianKey) {
     setActiveNode("court");
   }
 
-  handoffOutput.classList.remove("visible");
+  if (clearOutput) {
+    handoffOutput.classList.remove("visible");
+  }
   sectionHandoffAction.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
